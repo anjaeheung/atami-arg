@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>噂ちゃんねる — 아타미 사진집 캠페인</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <main id="main"><!-- 렌더러가 채움 --></main>
+
+    <aside id="sidebar" class="collapsed">
+      <button id="bmHandle" aria-label="북마크 열기">
+        <span class="bm-ico">📖</span>
+        <span class="bm-label">ブックマーク</span>
+      </button>
+      <div id="bmPanel">
+        <div id="bmTypes">
+          <span>🌐<br>HP</span>
+          <span>📝<br>NEWS</span>
+          <span>💬<br>掲示板</span>
+        </div>
+        <ul id="bmList"><!-- 북마크 항목 --></ul>
+      </div>
+    </aside>
+
+    <div id="toast"></div>
+  </div>
+
+  <script src="story.js"></script>
+  <script src="engine.js"></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+/* ==========================================================================
+   style.css — 스크린샷 느낌 재현
+   ========================================================================== */
+:root{
+  --green:#1f8a24;        /* 게시판 메타(번호/익명/날짜/ID) */
+  --board-bg:#e8e8e8;     /* 바깥 회색 배경 */
+  --content-bg:#ffffff;
+  --purple:#5b3d8c;       /* 소문채널 로고/섹션 */
+  --purple-bar:#6a4a9e;
+  --news-red:#a00913;
+  --blue:#63a4d8;         /* 입력하는 버튼 */
+  --blue-dk:#4a86bd;
+  --banner-red:#c30d18;
+  --line:#dcdcdc;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--board-bg);
+  color:#222;
+  font-family:"Helvetica Neue",Arial,"Malgun Gothic","맑은 고딕","Yu Gothic",sans-serif;
+  font-size:15px;line-height:1.7;
+}
+
+/* 레이아웃 */
+#app{position:relative;min-height:100vh;}
+#main{
+  max-width:900px;margin:0 auto;padding:22px 14px 80px;
+}
+
+/* -------------------------------- 오프닝 -------------------------------- */
+.intro{
+  background:var(--content-bg);border-radius:6px;
+  margin:24px auto;max-width:760px;padding:56px 40px;
+  box-shadow:0 1px 3px rgba(0,0,0,.12);text-align:center;
+}
+.intro-text p{margin:.2em 0;color:#333;}
+.intro-gap{height:1.1em;}
+.intro-btn{
+  margin-top:40px;padding:14px 34px;border:none;border-radius:4px;
+  background:var(--blue);color:#fff;font-size:16px;font-weight:700;
+  border-bottom:3px solid var(--blue-dk);cursor:pointer;
+}
+.intro-btn:hover{filter:brightness(1.05);}
+
+/* ------------------------------ 게시판 톱 ------------------------------ */
+.board-top{
+  background:var(--content-bg);border-radius:4px;padding:20px 24px 40px;
+  box-shadow:0 1px 3px rgba(0,0,0,.1);
+}
+.board-logo{text-align:center;padding:28px 0 10px;}
+.board-logo img{max-width:230px;height:auto;}
+.logo-text{
+  display:block;font-size:56px;font-weight:800;color:var(--purple);
+  letter-spacing:2px;font-family:"Yu Mincho","MS Mincho",serif;
+}
+.board-tagline{text-align:center;color:#555;margin:18px 0 30px;}
+.board-tagline p{margin:.15em 0;}
+.board-section{
+  background:var(--purple-bar);color:#fff;text-align:center;font-weight:700;
+  padding:14px;border-radius:2px;letter-spacing:.5px;
+}
+.thread-list{list-style:none;margin:0;padding:18px 6px 0;}
+.thread-list li{padding:12px 4px;border-bottom:1px solid var(--line);}
+.thread-list a{color:#1c7a86;text-decoration:none;cursor:pointer;font-weight:600;}
+.thread-list a:hover{text-decoration:underline;}
+
+/* ------------------------------- 스레드 ------------------------------- */
+.thread{
+  background:var(--content-bg);border-radius:4px;padding:10px 4px 24px;
+  box-shadow:0 1px 3px rgba(0,0,0,.1);
+}
+.thread-head{
+  font-size:18px;font-weight:700;color:#333;padding:16px 20px 14px;
+  border-bottom:2px solid #eee;
+}
+.posts{padding:6px 20px;}
+.post{padding:14px 4px;border-bottom:1px dotted #cfcfcf;}
+.post-meta{font-size:13px;color:var(--green);margin-bottom:6px;}
+.post-meta .pno{font-weight:700;margin-right:4px;}
+.post-meta .pname{margin-right:8px;}
+.post-meta .pdate{color:#3a8a3a;margin-right:8px;}
+.post-meta .pid{color:#3a8a3a;}
+.post-body{color:#222;white-space:normal;word-break:break-word;}
+
+/* 새로 등장하는 글 */
+.post.reveal{animation:slidein .45s ease;background:#f4f4f4;}
+@keyframes slidein{
+  from{opacity:0;transform:translateY(-6px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* 링크 배너 (뉴스/HP로) */
+.link-banner{
+  margin:12px 0 2px;background:var(--banner-red);color:#fff;font-weight:700;
+  padding:14px 18px;border-radius:2px;cursor:pointer;
+}
+.link-banner::before{content:"› ";}
+.link-banner:hover{filter:brightness(1.08);}
+
+/* -------------------------------- 퀴즈 -------------------------------- */
+.quiz-area{padding:8px 20px;}
+.quiz-box{
+  background:#ededed;border-radius:6px;padding:24px 26px;margin-top:6px;
+}
+.quiz-q{font-weight:700;font-size:16px;margin-bottom:16px;}
+.quiz-fields{display:flex;flex-wrap:wrap;align-items:center;gap:8px 4px;}
+.qz-fixed{color:#333;}
+.qz-label{width:100%;color:#555;font-size:14px;margin:6px 0 2px;}
+.qz-input{
+  padding:11px 12px;border:1px solid #c4c4c4;border-radius:3px;
+  font-size:15px;background:#fff;
+}
+.qz-text{flex:1 1 240px;min-width:180px;}
+.qz-select{min-width:150px;cursor:pointer;}
+.quiz-msg{min-height:20px;margin:12px 0 2px;font-size:14px;}
+.quiz-msg.wrong{color:#c30d18;font-weight:600;}
+.quiz-submit{
+  margin-top:6px;padding:14px 40px;border:none;border-radius:4px;
+  background:var(--blue);color:#fff;font-size:16px;font-weight:700;
+  border-bottom:3px solid var(--blue-dk);cursor:pointer;
+}
+.quiz-submit:hover{filter:brightness(1.05);}
+
+.thread-end{
+  padding:26px 20px;color:#666;text-align:center;background:#f6f6f6;
+  border-radius:6px;margin-top:6px;
+}
+.link-inline{color:#1c7a86;cursor:pointer;text-decoration:underline;}
+
+/* ----------------------------- 뉴스 / HP ----------------------------- */
+.doc{
+  background:var(--content-bg);border-radius:4px;padding:0 0 40px;
+  box-shadow:0 1px 3px rgba(0,0,0,.1);overflow:hidden;
+}
+.doc-back{
+  display:inline-block;margin:16px 0 0 20px;padding:8px 16px;border:none;
+  background:#efefef;border-radius:3px;cursor:pointer;color:#333;font-size:14px;
+}
+.doc-back:hover{background:#e2e2e2;}
+.news-masthead{
+  color:var(--news-red);font-size:44px;font-weight:800;padding:10px 28px 4px;
+  font-family:"Yu Mincho","MS Mincho",serif;
+}
+.news-date{background:var(--news-red);color:#fff;padding:5px 28px;font-size:13px;}
+.news-title{font-size:24px;color:#222;padding:22px 28px 10px;margin:0;font-weight:700;}
+.doc p{padding:0 28px;margin:.7em 0;color:#333;}
+.hp-title{font-size:26px;color:var(--purple);padding:26px 28px 8px;margin:0;}
+
+.doc-figure{margin:16px 28px;}
+.img-wrap{background:#e6e6e6;border-radius:3px;overflow:hidden;min-height:60px;}
+.img-wrap img{display:block;max-width:100%;height:auto;}
+.img-missing{
+  position:relative;min-height:150px;
+  display:flex;align-items:center;justify-content:center;
+}
+.img-missing::after{content:"이미지 자리";color:#999;font-size:13px;}
+.doc-figure figcaption{color:#666;font-size:13px;margin-top:6px;}
+
+/* ---------------------------- 북마크 사이드바 ---------------------------- */
+#sidebar{position:fixed;top:0;right:0;height:100%;z-index:40;display:flex;}
+#bmHandle{
+  align-self:flex-start;margin-top:0;background:#111;color:#fff;border:none;
+  cursor:pointer;padding:16px 8px 20px;border-radius:0 0 0 6px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.bm-ico{font-size:20px;}
+.bm-label{writing-mode:vertical-rl;letter-spacing:2px;font-weight:700;font-size:14px;}
+#bmPanel{
+  width:300px;height:100%;background:#fff;border-left:1px solid #ccc;
+  box-shadow:-3px 0 10px rgba(0,0,0,.15);overflow-y:auto;padding:14px 0;
+  transition:transform .25s ease;
+}
+#bmTypes{
+  display:flex;justify-content:center;gap:26px;padding:8px 0 16px;
+  border-bottom:1px solid #eee;text-align:center;color:#444;font-size:12px;
+}
+#bmTypes span{line-height:1.5;font-size:18px;}
+#bmList{list-style:none;margin:0;padding:6px 0;}
+#bmList li{
+  padding:12px 16px;border-bottom:1px solid #f0f0f0;cursor:pointer;
+  font-size:13px;color:#333;display:flex;gap:8px;align-items:flex-start;
+}
+#bmList li:hover{background:#f6f6f6;}
+.bm-i{flex:0 0 auto;}
+
+/* 접힘 상태: 패널을 화면 밖으로 */
+#sidebar.collapsed #bmPanel{transform:translateX(100%);}
+
+/* ------------------------------- 토스트 ------------------------------- */
+#toast{
+  position:fixed;left:50%;top:44%;transform:transl(-50%,-50%) scale(.9);
+  transform:translate(-50%,-50%) scale(.9);
+  background:rgba(30,30,30,.92);color:#fff;padding:16px 30px;border-radius:8px;
+  font-size:15px;font-weight:600;opacity:0;pointer-events:none;z-index:60;
+  transition:opacity .2s ease;
+}
+#toast.show{opacity:1;}
+
+/* ------------------------------- 반응형 ------------------------------- */
+@media (max-width:640px){
+  body{font-size:14px;}
+  #main{padding:14px 8px 70px;}
+  .intro{padding:34px 20px;}
+  .logo-text{font-size:42px;}
+  #bmPanel{width:82vw;}
+  .news-masthead{font-size:34px;}
+}

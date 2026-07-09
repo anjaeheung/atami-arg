@@ -1,0 +1,343 @@
+/* ==========================================================================
+   engine.js — 범용 엔진
+   책임 4가지: 렌더러 · 진행 관리자 · 퀴즈 판정기 · 북마크 관리자
+   story.js 의 STORY 데이터를 읽어서 동작한다. (저장 기능 없음: 새로고침하면 처음부터)
+   ========================================================================== */
+
+const REVEAL_DELAY = 900;   // 정답 후 글이 한 개씩 등장하는 간격(ms)
+
+const state = {
+  current: "intro",       // 지금 메인에 보이는 페이지 id (intro | board | sceneId | pageId)
+  returnTo: null,         // 뉴스/HP에서 "게시판으로 돌아가기" 대상
+  solved: {},             // sceneId -> 푼 문제 개수
+  shown: {},              // sceneId -> 이미 애니메이션 없이 표시된 마지막 entry 인덱스
+  bookmarkIds: new Set(),
+  bookmarks: [],          // [{id, icon, title}]
+  unlockedScenes: new Set(["thread1"]),
+  animating: false,
+  animToken: 0,        // 렌더될 때마다 증가 → 이전 등장 애니메이션 무효화
+};
+
+const $main = () => document.getElementById("main");
+
+/* ------------------------------ 진입점 ------------------------------ */
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("bmHandle").addEventListener("click", () => {
+    document.getElementById("sidebar").classList.toggle("collapsed");
+  });
+  // 메인 영역 클릭 위임
+  $main().addEventListener("click", onMainClick);
+  render();
+});
+
+/* ------------------------------ 라우팅 ------------------------------ */
+function openPage(id) {
+  // 스레드에서 뉴스/HP로 갈 때 돌아올 곳 기억
+  if (STORY.pages[id] && isScene(state.current)) {
+    state.returnTo = state.current;
+  }
+  state.current = id;
+  addBookmark(id);
+  render();
+  window.scrollTo(0, 0);
+  const m = $main(); if (m) m.scrollTop = 0;
+}
+
+function isScene(id) { return STORY.scenes.some((s) => s.id === id); }
+function getScene(id) { return STORY.scenes.find((s) => s.id === id); }
+
+function render() {
+  state.animToken++;            // 진행 중이던 글 등장 애니메이션 취소
+  state.animating = false;
+  const id = state.current;
+  if (id === "intro") return renderIntro();
+  if (id === "board") return renderBoard();
+  if (isScene(id)) return renderThread(id);
+  if (STORY.pages[id]) return renderDocument(id);
+}
+
+/* ------------------------------ 오프닝 ------------------------------ */
+function renderIntro() {
+  const t = STORY.intro;
+  $main().innerHTML = `
+    <div class="intro">
+      <div class="intro-text">
+        ${t.lines.map((l) => l === "" ? `<div class="intro-gap"></div>` : `<p>${esc(l)}</p>`).join("")}
+      </div>
+      <button class="intro-btn" data-nav="board">${esc(t.button)}</button>
+    </div>`;
+}
+
+/* --------------------------- 게시판 톱 --------------------------- */
+function renderBoard() {
+  const b = STORY.board;
+  const threads = b.threads.filter((th) => state.unlockedScenes.has(th.to));
+  $main().innerHTML = `
+    <div class="board-top">
+      <div class="board-logo">
+        <img src="${b.logoImage}" alt="" onerror="this.style.display='none'">
+        <span class="logo-text">${esc(b.logo)}</span>
+      </div>
+      <div class="board-tagline">
+        ${b.tagline.map((l) => `<p>${esc(l)}</p>`).join("")}
+      </div>
+      <div class="board-section">${esc(b.section)}</div>
+      <ul class="thread-list">
+        ${threads.map((th) => `<li><a data-nav="${th.to}">${esc(th.label)}</a></li>`).join("")}
+      </ul>
+    </div>`;
+}
+
+/* ----------------------------- 스레드 ----------------------------- */
+function renderThread(sceneId) {
+  const scene = getScene(sceneId);
+  const entries = scene.entries;
+  const solvedCount = state.solved[sceneId] || 0;
+
+  // 현재 막고 있는 문제(gate) 찾기: (solvedCount+1)번째 문제
+  let quizSeen = 0, gateIndex = entries.length, gateQuiz = null;
+  for (let i = 0; i < entries.length; i++) {
+    if (entries[i].quiz) {
+      quizSeen++;
+      if (quizSeen === solvedCount + 1) { gateIndex = i; gateQuiz = entries[i].quiz; break; }
+    }
+  }
+
+  $main().innerHTML = `
+    <div class="thread">
+      <div class="thread-head">${esc(scene.title)}</div>
+      <div class="posts" id="posts"></div>
+      <div class="quiz-area" id="quizArea"></div>
+    </div>`;
+
+  const postsEl = document.getElementById("posts");
+  const lastShown = state.shown[sceneId] ?? -1;
+
+  // gate 이전의 post entry들 (문제 entry는 건너뜀)
+  const postEntries = [];
+  for (let i = 0; i < gateIndex; i++) {
+    if (entries[i].post != null) postEntries.push({ e: entries[i], i });
+  }
+
+  const immediate = postEntries.filter((p) => p.i <= lastShown);
+  const toAnimate = postEntries.filter((p) => p.i > lastShown);
+
+  immediate.forEach((p) => postsEl.appendChild(postEl(p.e)));
+
+  const finish = () => {
+    state.shown[sceneId] = gateIndex - 1;
+    if (gateQuiz) {
+      renderQuiz(sceneId, gateQuiz);
+    } else {
+      // 더 이상 문제 없음 = 이번 슬라이스 끝
+      document.getElementById("quizArea").innerHTML =
+        `<div class="thread-end">여기까지가 지금 만들어진 부분입니다. (스토리 계속 제작 중…)
+         <br><a class="link-inline" data-nav="board">← 게시판 목록으로</a></div>`;
+    }
+  };
+
+  if (toAnimate.length === 0) { finish(); return; }
+
+  // 새로 열린 글을 한 개씩 시간 텀을 두고 등장
+  const myToken = state.animToken;
+  state.animating = true;
+  let k = 0;
+  const step = () => {
+    if (myToken !== state.animToken) return;   // 그새 다른 페이지로 이동 → 중단
+    const el = postEl(toAnimate[k].e);
+    el.classList.add("reveal");
+    postsEl.appendChild(el);
+    k++;
+    if (k < toAnimate.length) {
+      setTimeout(step, REVEAL_DELAY);
+    } else {
+      state.animating = false;
+      finish();
+    }
+  };
+  step();
+}
+
+function postEl(e) {
+  const div = document.createElement("div");
+  div.className = "post";
+  const lines = e.body.split("\n").map((l) => esc(l) || "&nbsp;").join("<br>");
+  div.innerHTML = `
+    <div class="post-meta">
+      <span class="pno">${e.post}:</span>
+      <span class="pname">익명</span>
+      <span class="pdate">20XX/08/26</span>
+      <span class="pid">ID:${esc(e.uid || "????????")}</span>
+    </div>
+    <div class="post-body">${lines}</div>
+    ${e.link ? `<div class="link-banner" data-open="${e.link.to}">${esc(e.link.label)}</div>` : ""}`;
+  return div;
+}
+
+/* ----------------------------- 퀴즈 ----------------------------- */
+function renderQuiz(sceneId, quiz) {
+  const area = document.getElementById("quizArea");
+  const fieldsHtml = quiz.fields.map((f, i) => {
+    if (f.text != null) return `<span class="qz-fixed">${esc(f.text)}</span>`;
+    if (f.type === "select") {
+      const opts = `<option value="" disabled selected></option>` +
+        f.options.map((o) => `<option value="${esc(o)}">${esc(o)}</option>`).join("");
+      return `<select class="qz-input qz-select" data-fi="${i}">${opts}</select>`;
+    }
+    // text
+    const label = f.label ? `<div class="qz-label">${esc(f.label)}</div>` : "";
+    return `${label}<input class="qz-input qz-text" data-fi="${i}" type="text"
+              placeholder="${esc(f.placeholder || "")}" autocomplete="off">`;
+  }).join("");
+
+  area.innerHTML = `
+    <div class="quiz-box">
+      <div class="quiz-q">${esc(quiz.question)}</div>
+      <div class="quiz-fields">${fieldsHtml}</div>
+      <div class="quiz-msg" id="quizMsg"></div>
+      <button class="quiz-submit" data-submit="${sceneId}">입력하는</button>
+    </div>`;
+
+  const first = area.querySelector(".qz-text");
+  if (first) {
+    first.focus();
+    first.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter") submitQuiz(sceneId);
+    });
+  }
+}
+
+function submitQuiz(sceneId) {
+  if (state.animating) return;
+  const scene = getScene(sceneId);
+  const solvedCount = state.solved[sceneId] || 0;
+
+  // 현재 gate 문제 다시 찾기
+  let quizSeen = 0, quiz = null;
+  for (const e of scene.entries) {
+    if (e.quiz) { quizSeen++; if (quizSeen === solvedCount + 1) { quiz = e.quiz; break; } }
+  }
+  if (!quiz) return;
+
+  let ok = true;
+  quiz.fields.forEach((f, i) => {
+    if (f.text != null) return;
+    const el = document.querySelector(`[data-fi="${i}"]`);
+    const val = el ? el.value : "";
+    if (f.type === "select") {
+      if (val !== f.answer) ok = false;
+    } else {
+      const answers = (f.answers || []).map(norm);
+      if (!answers.includes(norm(val))) ok = false;
+    }
+  });
+
+  const msg = document.getElementById("quizMsg");
+  if (ok) {
+    state.solved[sceneId] = solvedCount + 1;
+    renderThread(sceneId);            // 다음 글들이 순차 등장
+  } else {
+    msg.textContent = "정답이 아닙니다. 다시 시도해 보세요.";
+    msg.classList.add("wrong");
+  }
+}
+
+function norm(s) {
+  return String(s).trim().toLowerCase().replace(/\s+/g, "").replace(/[.\-/]/g, "");
+}
+
+/* --------------------------- 뉴스 / HP --------------------------- */
+function renderDocument(pageId) {
+  const p = STORY.pages[pageId];
+  const back = state.returnTo
+    ? `<button class="doc-back" data-nav="${state.returnTo}">← 게시판으로 돌아가기</button>` : "";
+
+  if (p.type === "news") {
+    $main().innerHTML = `
+      <div class="doc news">
+        ${back}
+        <div class="news-masthead">News</div>
+        <div class="news-date">${esc(p.date || "")}</div>
+        <h1 class="news-title">${esc(p.title)}</h1>
+        ${(p.images || []).map(imgHtml).join("")}
+        ${p.body.map((para) => `<p>${esc(para)}</p>`).join("")}
+      </div>`;
+  } else { // hp
+    $main().innerHTML = `
+      <div class="doc hp">
+        ${back}
+        <h1 class="hp-title">${esc(p.title)}</h1>
+        ${(p.images || []).map(imgHtml).join("")}
+        ${p.body.map((para) => `<p>${esc(para)}</p>`).join("")}
+      </div>`;
+  }
+}
+
+function imgHtml(img) {
+  const o = typeof img === "string" ? { src: img } : img;
+  return `<figure class="doc-figure">
+      <div class="img-wrap"><img src="${o.src}" alt=""
+        onerror="this.parentNode.classList.add('img-missing')"></div>
+      ${o.caption ? `<figcaption>${esc(o.caption)}</figcaption>` : ""}
+    </figure>`;
+}
+
+/* --------------------------- 북마크 --------------------------- */
+function addBookmark(id) {
+  if (id === "intro") return;
+  if (state.bookmarkIds.has(id)) return;
+
+  let icon = "💬", title = "";
+  if (id === "board") { icon = "💬"; title = "「소문채널」 TOP"; }
+  else if (isScene(id)) { icon = "💬"; title = getScene(id).title; }
+  else if (STORY.pages[id]) {
+    const p = STORY.pages[id];
+    icon = p.type === "news" ? "📝" : "🌐";
+    title = p.title;
+  } else return;
+
+  state.bookmarkIds.add(id);
+  state.bookmarks.push({ id, icon, title });
+  renderSidebar();
+  showToast("북마크에 추가되었습니다");
+}
+
+function renderSidebar() {
+  const ul = document.getElementById("bmList");
+  ul.innerHTML = state.bookmarks.map((b) =>
+    `<li data-nav="${b.id}"><span class="bm-i">${b.icon}</span>${esc(b.title)}</li>`).join("");
+}
+
+let toastTimer = null;
+function showToast(text) {
+  const t = document.getElementById("toast");
+  t.textContent = text;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 1600);
+}
+
+/* --------------------------- 이벤트 위임 --------------------------- */
+function onMainClick(ev) {
+  const nav = ev.target.closest("[data-nav]");
+  if (nav) { openPage(nav.getAttribute("data-nav")); return; }
+
+  const open = ev.target.closest("[data-open]");
+  if (open) { openPage(open.getAttribute("data-open")); return; }
+
+  const sub = ev.target.closest("[data-submit]");
+  if (sub) { submitQuiz(sub.getAttribute("data-submit")); return; }
+}
+
+// 북마크 목록 클릭 (사이드바)
+document.addEventListener("click", (ev) => {
+  const li = ev.target.closest("#bmList li[data-nav]");
+  if (li) openPage(li.getAttribute("data-nav"));
+});
+
+/* --------------------------- 유틸 --------------------------- */
+function esc(s) {
+  return String(s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}

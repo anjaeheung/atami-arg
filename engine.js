@@ -408,7 +408,7 @@ function renderThread(sceneId) {
     } else {
       // 아직 준비 안 된 스레드
       document.getElementById("quizArea").innerHTML =
-        `<div class="thread-end">이 스레드는 아직 준비 중입니다. (스토리 계속 제작 중…)
+        `<div class="thread-end">여기가 스레드의 마지막입니다.
          <br><a class="link-inline" data-nav="board">← 게시판 목록으로</a></div>`;
     }
   };

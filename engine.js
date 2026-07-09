@@ -369,6 +369,13 @@ function renderDocument(pageId) {
         <h1 class="news-title">${esc(p.title)}</h1>
         ${(p.images || []).map(imgHtml).join("")}
         ${p.body.map((para) => `<p>${esc(para)}</p>`).join("")}
+        ${p.gallery ? `
+          <div class="news-gallery">
+            <div class="news-gallery-row">
+              ${p.gallery.images.map((src) => `<div class="ng-item"><img src="${src}" alt="" onerror="this.parentNode.classList.add('img-missing')"></div>`).join("")}
+            </div>
+            ${p.gallery.caption ? `<div class="ng-cap">${esc(p.gallery.caption)}</div>` : ""}
+          </div>` : ""}
       </div>`;
   } else if (p.blocks) {  // 섹션(blocks) 구조의 HP
     $main().innerHTML = renderHpStructured(p, pageId, back);
@@ -512,7 +519,7 @@ function showToast(text) {
 /* --------------------------- 이벤트 위임 --------------------------- */
 function onMainClick(ev) {
   // 기사/HP 이미지 클릭 → 확대 (실제로 로드된 이미지일 때만)
-  const img = ev.target.closest(".doc-figure img, .post-img img");
+  const img = ev.target.closest(".doc-figure img, .post-img img, .ng-item img");
   if (img && img.naturalWidth > 0) { openLightbox(img.dataset.full || img.src); return; }
 
   const nav = ev.target.closest("[data-nav]");

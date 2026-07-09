@@ -739,8 +739,18 @@ const STORY = {
         "하츠시마 미술관 개관을 위한 준비는 일시적으로 중단되었지만, 관계자들은 신속한 대응과 복구를 통해 예정대로 개관을 목표로 하겠다고 밝혔다.",
       ],
       images: [
-        { src: "images/theft-items.jpg", caption: "▲ 도난당한 5점의 미술품" },
+        { src: "images/5.jpg", caption: "▲ 하츠시마 미술관 완공 예상도" },
       ],
+      gallery: {
+        images: [
+          "images/news06-img02.jpg",
+          "images/news06-img03.jpg",
+          "images/news06-img04.jpg",
+          "images/news06-img05.jpg",
+          "images/news06-img06.jpg",
+        ],
+        caption: "▲ 도난당한 5점의 미술품",
+      },
     },
 
     news_theft_arrest: {

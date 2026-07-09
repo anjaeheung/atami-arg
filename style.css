@@ -268,6 +268,16 @@ body{
 .img-missing::after{content:"이미지 자리";color:#999;font-size:13px;}
 .doc-figure figcaption{color:#666;font-size:13px;margin-top:6px;}
 
+/* 뉴스 하단 이미지 갤러리 (도난품 5점 등) */
+.news-gallery{padding:8px 28px 14px;}
+.news-gallery-row{display:flex;gap:8px;flex-wrap:wrap;}
+.ng-item{flex:1 1 0;min-width:80px;max-width:160px;background:#eee;border-radius:2px;overflow:hidden;}
+.ng-item img{width:100%;height:auto;display:block;cursor:zoom-in;}
+.ng-item.img-missing{min-height:110px;position:relative;}
+.ng-item.img-missing img{display:none;}
+.ng-item.img-missing::after{content:"이미지";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;}
+.ng-cap{color:#666;font-size:13px;margin-top:8px;}
+
 /* 이미지 확대(라이트박스) */
 #lightbox{
   position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;

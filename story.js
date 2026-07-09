@@ -665,8 +665,6 @@ const STORY = {
         ] },
       ],
       submit: "전송",
-      endingMovie: "Xj535-wQFvU",           // 고발(송신) 후 재생되는 엔딩 무비
-      endingMovieButton: "엔딩 무비를 재생한다",
       successHead: "정보 제공 감사합니다.",
       successLines: [
         "당신이 유출한 것으로 인해 개발추진협회의 악행은 만천하에 드러났다.",
@@ -724,16 +722,10 @@ const STORY = {
         ] },
       ],
       submit: "전송",
+      endingMovie: "Xj535-wQFvU",           // 최종 제보(신목/아래) 후 이어지는 엔딩 영상 = 끝
+      endingMovieButton: "엔딩 무비를 재생한다",
       successHead: "정보 제공 감사합니다.",
-      successLines: [
-        "모델 마나카 아이는, 하츠시마의 신목 아래에 잠들어 있었다.",
-        "제물로 바쳐진 그녀 위에서, 미츠로는 붉게 자라나 있었다.",
-        "",
-        "편집장 우나바라 나츠미와 개발추진협회가 저지른 모든 진실이,",
-        "이제 세상에 드러난다.",
-        "",
-        "― 완결 ―",
-      ],
+      successLines: [],
     },
   },
 

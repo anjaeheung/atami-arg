@@ -582,7 +582,7 @@ const STORY = {
         ] },
         { fields: [
           { text: "2. 개발추진협회에 의한 미술품 도난은 " },
-          { type: "select", answer: "자연을 지키는 회 회장", options: ["카페 점주", "모델", "부동산 회사 사장", "자연을 지키는 회 회장", "경찰"] },
+          { type: "select", answer: "자연을 지키는 회", options: ["카페 점주", "모델", "부동산 회사 사장", "자연을 지키는 회", "경찰"] },
           { text: " 에 대한 " },
           { type: "select", answer: "괴롭힘", options: ["배려", "친절함", "괴롭힘", "농담"] },
           { text: " 이었다." },

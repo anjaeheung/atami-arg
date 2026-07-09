@@ -64,14 +64,14 @@ const STORY = {
 
         { quiz: {
             question: "Q1. 촬영일은 언제? (사진 속 단서를 찾아보자)",
-            answerPost: { post: 10, uid: "k2p9wxz1q" },   // 정답 맞히면 내가 쓴 답이 10번 글로
             fields: [
               { type: "text", placeholder: "예: ○월 ○일",
                 answers: ["5月1日", "5월1일", "5월 1일", "5.1", "5/1", "5-1", "0501"] },
             ],
         }},
 
-        { post: 11, uid: "44xifpydf", body: "진짜다\n역 사진에 나온 전광판에 “5월 1일”이라고 표시된 게 찍혀 있음" },
+        { post: 10, uid: "c9xtzkcnx", body: "역 사진에 나온 전광판에 “5월 1일”이라고 표시된 게 찍혀 있어" },
+        { post: 11, uid: "44xifpydf", body: "진짜네\n이런 데에 날짜가 숨어 있었구나" },
         { post: 12, uid: "c9xtzkcnx", body: "2문제째\n\nQ2. 아타미 사진집 『うたかた』에 등장하는, 아타미 출신 모델의 풀네임은?" },
         { post: 13, uid: "c9xtzkcnx", body: "모델이라면 7페이지에 나온 여자애 말하는 거지?" },
         { post: 14, uid: "d5ehz2nyr", body: ">>12\n아타미 출신인지까지는 굳이 상관없지 않냐?" },
@@ -82,13 +82,13 @@ const STORY = {
 
         { quiz: {
             question: "Q2. 아타미 출신 모델의 풀네임은?",
-            answerPost: { post: 19, uid: "k2p9wxz1q" },
             fields: [
               { type: "text", placeholder: "이름 입력",
                 answers: ["真中あい", "真中愛", "마나카아이", "마나카 아이"] },
             ],
         }},
 
+        { post: 19, uid: "c9xtzkcnx", body: "지역 기업 광고 뒤져보니까 나왔다\n이름 「真中あい(마나카 아이)」래" },
         { post: 20, uid: "3u3jauat4", body: "봐라, 역시 지역 밀착형 탤런트였네" },
         { post: 21, uid: "44xifpydf", body: "나 시즈오카 토박이인데 이 애는 모르겠는데" },
         { post: 22, uid: "c9xtzkcnx", body: "잠깐만\n모델 이름이랑 날짜로 검색해봤더니 뉴스가 나오는데…",
@@ -103,7 +103,6 @@ const STORY = {
 
         { quiz: {
             question: "Q. 22페이지 이후에 그녀가 (우연히) 찍혀 있다. 무엇을 하고 있는가?",
-            answerPost: { post: 30, uid: "k2p9wxz1q" },
             fields: [
               { type: "select", answer: "음식점",
                 options: ["역 앞", "음식점", "온천", "여관", "바다", "해변", "공원"] },
@@ -116,7 +115,8 @@ const STORY = {
             ],
         }},
 
-        { post: 31, uid: "3u3jauat4", body: "확실히 아저씨랑 같이 찍혀 있네…\n아이탄, 휴식 시간에 파파활동이냐~ (´・ω・`)" },
+        { post: 30, uid: "44xifpydf", body: "25페이지 봐봐\nMARUYA Cafe&Bar에서 어떤 남자랑 만나고 있는 게 찍혀 있어" },
+        { post: 31, uid: "3u3jauat4", body: "확실히 아저씨랑 같이 찍혀 있네…\n아이탄, 휴식 시간에 파파활동이냐~ (´;ω;`)" },
         { post: 32, uid: "c9xtzkcnx", body: ">>31\n아이탄 ㅋㅋ 벌써 덕질 시작했냐 ㅋㅋ" },
         { post: 33, uid: "44xifpydf", body: "바 카운터에 놓인 시계를 보니까\n증언된 촬영 휴식 시간이랑 딱 맞아떨어지네" },
         { post: 34, uid: "swb86w59c", body: "같이 찍혀 있는 사람, 누구야?" },

@@ -134,10 +134,9 @@ const STORY = {
         "관계자에 따르면, 마나카 씨는 정오 무렵 한 차례 휴식을 취한 뒤 오후 1시에 현장으로 복귀했으며, 사진집 편집자가 준비한 촬영용 도시락을 먹은 이후 몸 상태가 좋지 않은 모습이 보였다고 한다.",
       ],
       images: [
-        // src: 기사에 오른쪽으로 뜨는 사진 / caption: 사진 밑 설명
-        // full(선택): 클릭해서 확대할 때 보여줄 별도 이미지(고해상도·확대판). 없으면 src를 그대로 확대
-        { src: "images/news_missing_1.jpg", caption: "▲ 마나카 아이 씨",
-          full: "images/news_missing_1_big.jpg" },
+        // src: 기사에 오른쪽으로 뜨는 사진 (클릭하면 이 사진이 그대로 크게 뜸)
+        // caption: 사진 밑 설명
+        { src: "images/news_missing_1.jpg", caption: "▲ 마나카 아이 씨" },
       ],
     },
   },

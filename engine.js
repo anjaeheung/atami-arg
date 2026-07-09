@@ -407,8 +407,9 @@ function renderSecret(p, pageId) {
         <div class="secret-envcap">${esc(s.envelopeCaption || "✉ 5번 눌러보세요")}</div>
       </div>
       <div class="secret-reveal" id="secretReveal" style="display:none;">
-        <div class="news-masthead">${esc(s.revealTitle)}</div>
-        ${s.revealBody.map((l) => `<p>${esc(l)}</p>`).join("")}
+        ${s.revealImage
+          ? `<div class="secret-reveal-img"><img src="${s.revealImage}" alt="" onerror="this.parentNode.classList.add('img-missing')"></div>`
+          : `<div class="news-masthead">${esc(s.revealTitle)}</div>${(s.revealBody || []).map((l) => `<p>${esc(l)}</p>`).join("")}`}
       </div>
     </div>`;
 }
@@ -417,7 +418,9 @@ function renderSecret(p, pageId) {
 function renderHpStructured(p, pageId, back) {
   let h = `<div class="doc hp hp-structured">${back}`;
   h += `<div class="hp-brand">${p.logoImage ? `<img src="${p.logoImage}" alt="" onerror="this.style.display='none'">` : ""}<span>${esc(p.title)}</span></div>`;
-  if (p.hero) {
+  if (p.hero && p.hero.fullImage) {   // 텍스트가 박힌 통 히어로 이미지
+    h += `<div class="hp-herofull"><img src="${p.hero.fullImage}" alt="" onerror="this.style.display='none'"></div>`;
+  } else if (p.hero) {
     h += `<div class="hp-hero"${p.hero.image ? ` style="background-image:url('${p.hero.image}')"` : ""}>
         <div class="hp-hero-text">${esc(p.hero.banner)}</div>
         ${p.hero.sub ? `<div class="hp-hero-sub">${esc(p.hero.sub)}</div>` : ""}
@@ -430,6 +433,7 @@ function renderHpStructured(p, pageId, back) {
     h += `<div class="hp-block">`;
     if (b.heading) h += `<h2 class="hp-bh">${esc(b.heading)}</h2>`;
     if (b.center) h += `<p class="hp-calligraphy">${esc(b.center)}</p>`;
+    if (b.plainImage) h += `<div class="hp-plain-img"><img src="${b.plainImage}" alt="" onerror="this.style.display='none'"></div>`;
     if (b.lines) h += b.lines.map((l) => `<p class="hp-line">${esc(l)}</p>`).join("");
     if (b.image) h += imgHtml({ src: b.image, caption: b.caption });
     if (b.profile) {

@@ -268,13 +268,13 @@ const STORY = {
         { post: 14, uid: "gg65736d9", body: "이 방, 「嵐(아라시)」래" },
         { post: 15, uid: "44xifpydf", body: "아라시인가\n신관(新館)에 있는 방이네" },
         { post: 16, uid: "inydpn6k8", body: "이 방만큼은 절대 안 묵을래요" },
-        { post: 17, uid: "swb86w59c", body: "뉴스 기사에 피해자 옆에 있던 사람, 이 사진집에도 찍혀 있지 않냐?", image: "images/shrine_victim.jpg" },
+        { post: 17, uid: "swb86w59c", body: "뉴스 기사에 피해자 옆에 있던 사람, 이 사진집에도 찍혀 있지 않냐?", image: "images/news04-img03.jpg" },
         { post: 18, uid: "3u3jauat4", body: "기사에서는 얼굴 가려져 있는데\n어디지?" },
         { post: 19, uid: "swb86w59c", body: ">>18\n힌트: 서핑보드" },
         { quiz: { question: "Q. 기사에서 피해자 옆에 있는 남자가 사진집에 찍혀 있는 것 같다. 어느 장소에 있는가? 고유명사로 답하시오.", fields: [ { type: "text", placeholder: "장소 입력", answers: ["サンビーチ", "선비치", "썬비치", "산비치", "모래사장"] } ] } },
         { post: 20, uid: "44xifpydf", body: "사진집에도 있네\n「サンビーチ(선비치)」에서 서핑하는 게 찍혀 있어" },
         { post: 21, uid: "inydpn6k8", body: "알기 쉽네…" },
-        { post: 22, uid: "d5ehz2nyr", body: "이 녀석 완전 서퍼네 ㅋㅋ\n왜 팔에 완장 차고 있는지는 모르겠는데 ㅋㅋ" },
+        { post: 22, uid: "d5ehz2nyr", body: "이 녀석 완전 서퍼네 ㅋㅋ\n왜 팔에 완장 차고 있는지는 모르겠는데 ㅋㅋ", image: "images/thread2-img04.jpg" },
         { post: 23, uid: "swb86w59c", body: "어디 단체 마크 같은데?" },
         { post: 24, uid: "swb86w59c", body: "이 마크, 사진집 뒤쪽에서 본 것 같은데…\n벽돌 같은 건물이었나?" },
         { quiz: { question: "Q. 기사에서 피해자 옆에 있던 남자가 소속된 것으로 보이는 단체 이름은?", fields: [ { type: "text", placeholder: "단체 이름 입력", answers: ["自然を守る会", "자연을지키는모임", "자연을 지키는 모임", "자연을 지키는 회", "자연을지키는회"] } ] } },
@@ -285,7 +285,7 @@ const STORY = {
         { post: 29, uid: "c9xtzkcnx", body: "그러고 보니 피해자가 신주이자 회장이었잖아!" },
         { post: 30, uid: "d5ehz2nyr", body: "이와사키도 신주였냐\n좀 수상한데…" },
         { post: 31, uid: "gg65736d9", body: "신착 정보에 「회원 전용 페이지 업데이트했습니다」라고 돼 있는데\n회원 전용 페이지는 어디야?" },
-        { post: 32, uid: "3u3jauat4", body: "이거, 무슨 의미일까?" },
+        { post: 32, uid: "3u3jauat4", body: "이거, 무슨 의미일까?", image: "images/thread2-img05.png" },
         { post: 33, uid: "swb86w59c", body: "친구한테 물어봤는데, 이런 소문이 있다네\n\n자연을 지키는 회은, 회원에게 공지가 있을 때 공지와 관련된 물건에 마크를 붙인다.\n공지 내용을 알고 싶다면, 그 물건의 사진을 자연을 지키는 회이 관리하는 사이트에서 찾아서 5번 누르면 된다" },
         { post: 34, uid: "swb86w59c", body: "어, 그게 무슨 뜻이야?" },
         { post: 35, uid: "44xifpydf", body: ">>34\n그러니까 자연을 지키는 회 홈페이지에서\n마크가 붙은 사진(봉투)을 5번 누르면 회원 전용 공지를 볼 수 있다는 거지" },
@@ -461,25 +461,32 @@ const STORY = {
         "수사 결과, 민박 관계자나 다른 숙박객에 의한 범행은 불가능한 것으로 밝혀졌으며, 경찰은 범인 검거를 위한 제보를 요청하고 있다.",
       ],
       images: [
-        { src: "images/shrine_minshuku.jpg", caption: "▲ 사건이 발생한 민박" },
-        { src: "images/shrine_room.jpg", caption: "▲ 피해자가 묵고 있던 방 (민박 HP 제공)" },
-        { src: "images/shrine_victim.jpg", caption: "▲ 흉기에 찔린 가미시마 모리요시 씨(왼쪽)" },
+        { src: "images/news04-img01.jpg", caption: "▲ 사건이 발생한 민박" },
+        { src: "images/news04-img02.jpg", caption: "▲ 피해자가 묵고 있던 방 (민박 HP 제공)" },
+        { src: "images/news04-img03.jpg", caption: "▲ 흉기에 찔린 가미시마 모리요시 씨(왼쪽)" },
       ],
     },
 
     hp_shizen: {
       type: "hp",
       title: "자연을 지키는 회",
-      logoImage: "images/shizen_logo.png",          // 좌상단 작은 로고
-      centerLogoImage: "images/shizen_logo.png",     // 가운데 큰 로고
+      logoImage: "images/nsa-logo-l.png",            // 좌상단 로고
+      centerLogoImage: "images/nsa-logo-l.png",      // 가운데 큰 로고
       hero: {
-        image: "images/shizen_hero.jpg",             // 숲 배경
-        banner: "아타미의 자연을 파괴하는 관광 개발에 반대합니다!",
-        sub: "SAVING NATURE",
+        fullImage: "images/nsa-main-img.jpg",        // 히어로 통이미지(텍스트 포함)
       },
       blocks: [
         { heading: "신착 정보", lines: ["・회원 전용 페이지를 업데이트했습니다"] },
-        { center: "손을 맞잡고 아타미를 지켜나갑시다" },
+        { heading: "회원 소개" },
+        {
+          profile: {
+            image: "images/nsa-kamishima.jpg",
+            role: "회장",
+            name: "가미시마 모리요시(かみしま もりお)",
+            sub: "하츠시마 신사 신주",
+          },
+        },
+        { plainImage: "images/nsa-kamishima-comment.png" },
         {
           heading: "회장의 말",
           lines: [
@@ -488,12 +495,12 @@ const STORY = {
             "지금, 그 신목이 마음 없는 개발자들에 의해 베어질 위기에 놓여 있습니다.",
             "우리는 개발 추진 협회로부터 하츠시마의 신목을 지키기 위한 활동을 하고 있습니다.",
           ],
-          image: "images/shizen_goshinboku.jpg",
+          image: "images/nsa-img01.jpg",
           caption: "▲ 하츠시마의 신목(御神木)",
         },
         {
           profile: {
-            image: "images/shizen_iwasaki.jpg",
+            image: "images/nsa-iwasaki.jpg",
             role: "이사",
             name: "이와사키 쿠사미(いわさき くさみ)",
             sub: "수호신사(守海神社) 신주",
@@ -502,7 +509,7 @@ const STORY = {
         },
         {
           heading: "자연을 지키는 회 협력점",
-          image: "images/shizen_katou.jpg",
+          image: "images/nsa-img02.jpg",
           lines: [
             "협력점 입구에는, 아타미에 전해 내려오는 신사(神事)에 따라 사슴 머리를 효수하여 신에게 바치는 ‘가토(鹿頭·かとう)’를 두고 있습니다.",
             "자연을 지키는 회 협력점을 많이 애용해 주시기 바랍니다.",
@@ -526,18 +533,11 @@ const STORY = {
       ],
       // 봉투를 5번 누르면 열리는 회원 전용 숨겨진 페이지
       secret: {
-        heading: "우리는 지지 않습니다!",
-        clueLines: ["얼마 전, 우리 협회에 괴문서가 도착했습니다."],
-        envelopeImage: "images/shizen_envelope.jpg",
+        clueLines: ["봉투를 5번 눌러보세요."],
+        envelopeImage: "images/nsa-img03.jpg",
         envelopeCaption: "✉  “8월 24일에 도착했습니다”  — 봉투를 5번 눌러보세요",
         clicks: 5,
-        revealTitle: "【회원 전용】 우리는 지지 않습니다!",
-        revealBody: [
-          "얼마 전, 우리 협회에 괴문서가 도착했습니다. 조사 결과, 발신자는 「개발 추진 협회」 소속 인물인 것으로 밝혀졌습니다.",
-          "(편지 내용)",
-          "“자연을 지키는 회는 이 마을에 필요 없다. 즉시 해산해라.”",
-          "우리는 이러한 비열한 행위를 저지른 개발 추진 협회에 강하게 항의함과 동시에, 더욱 강한 의지를 가지고 활동을 이어가겠습니다!",
-        ],
+        revealImage: "images/thread2-img03.jpg",   // 숨겨진 회원 페이지 통이미지
       },
     },
 
@@ -553,20 +553,27 @@ const STORY = {
         "행복초는 아타미 주변에 자생하는 식물로 소지가 금지되어 있다. 미타 용의자는 입수 경로에 대해 침묵을 지키고 있다.",
         "시즈오카현 경찰은 미타 용의자와 살인 사건과의 관련성을 계속 조사 중이다.",
       ],
+      images: [
+        { src: "images/news05-img01.jpg", caption: "▲ 체포된 미타 토라타 용의자" },
+      ],
     },
 
     page_flower: {
       type: "hp",
       title: "행복초 (幸せ草)",
-      banner: "절대 안 됨",
-      body: [
-        "행복초는 먹는 것이 아닙니다. 아타미 주변에서만 자생하는 행복초는 환각 작용과 심각한 건강 이상을 일으켜 당신의 인생을 망가뜨립니다!",
-        "",
-        "【행복초란】",
-        "아타미 주변에서 자생하는 풀꽃이다. 생물로부터 얻는 영양분이 필요하기 때문에 대부분의 지역에서는 자라지 않는다.",
-        "과거에는 “이 꽃을 섭취하면 말이 제대로 나오지 않게 된다”는 점에서 “로로로(ロロロ) = 세 개의 로(ロ) = 미츠로(ミツロ)”라고 불리기도 했다.",
-        "신사 의식에 사용하기 위해 인공 재배가 시도된 적도 있었지만, 이 꽃은 땅속에서 “생물의 피”를 빨아들였을 때에만 붉은 꽃을 피우는 특성이 있다.",
-        "그 때문에 개화시키려면 생물을 산 채로 묻어야 했고, 윤리적인 문제로 현재는 그런 방식은 행해지지 않고 있다.",
+      hero: { fullImage: "images/mitsuro-img.png" },   // 경고 통포스터(텍스트 포함)
+      blocks: [
+        {
+          heading: "행복초란",
+          lines: [
+            "아타미 주변에서 자생하는 풀꽃이다. 생물로부터 얻는 영양분이 필요하기 때문에 대부분의 지역에서는 자라지 않는다.",
+            "과거에는 “이 꽃을 섭취하면 말이 제대로 나오지 않게 된다”는 점에서 “로로로(ロロロ) = 세 개의 로(ロ) = 미츠로(ミツロ)”라고 불리기도 했다.",
+            "신사 의식에 사용하기 위해 인공 재배가 시도된 적도 있었지만, 이 꽃은 땅속에서 “생물의 피”를 빨아들였을 때에만 붉은 꽃을 피우는 특성이 있다.",
+            "그 때문에 개화시키려면 생물을 산 채로 묻어야 했고, 윤리적인 문제로 현재는 그런 방식은 행해지지 않고 있다.",
+          ],
+          image: "images/mitsuro-illust.jpg",
+          caption: "▲ 약물이 뇌에 작용하는 원리",
+        },
       ],
     },
 

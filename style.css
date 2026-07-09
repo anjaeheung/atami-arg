@@ -190,6 +190,19 @@ body{
 .hp-supporter{text-align:center;margin:28px 28px 6px;}
 .hp-supporter .img-wrap{display:inline-block;max-width:560px;width:100%;}
 
+/* 회원 전용 숨겨진 페이지 (봉투 클릭) */
+.hp-secret{margin:26px 28px;padding:20px;border:1px dashed #b9b0c9;border-radius:6px;background:#faf8fd;text-align:center;}
+.secret-envelope{
+  display:inline-block;margin:14px 0;padding:14px 22px;border-radius:6px;
+  background:#efe9f7;color:#5b3d8c;font-weight:700;cursor:pointer;user-select:none;
+  transition:transform .08s;
+}
+.secret-envelope:hover{background:#e6dcf5;}
+.secret-envelope.clicked{transform:scale(.96);}
+.secret-reveal{margin-top:16px;text-align:left;border-top:1px solid #e2d8ef;padding-top:8px;}
+.secret-reveal .news-masthead{font-size:22px;padding:8px 0 4px;border-bottom:3px solid var(--news-red);}
+.secret-reveal p{padding:0;}
+
 /* HP 하단 News 공지 블록 */
 .hp-news{margin-top:30px;padding:0 0 8px;border-top:1px solid #eee;}
 .hp-news .news-masthead{border-bottom:3px solid var(--news-red);padding-bottom:6px;margin:24px 28px 0;}

@@ -315,6 +315,7 @@ function norm(s) {
 /* --------------------------- 뉴스 / HP --------------------------- */
 function renderDocument(pageId) {
   const p = STORY.pages[pageId];
+  state.secretClicks = 0;   // 페이지 열 때마다 봉투 클릭 수 초기화
   const back = state.returnTo
     ? `<button class="doc-back" data-nav="${state.returnTo}">← 게시판으로 돌아가기</button>` : "";
 
@@ -340,6 +341,15 @@ function renderDocument(pageId) {
         ${(p.images || []).map(imgHtml).join("")}
         ${p.body.map((para) => para === "" ? "" : `<p class="hp-line">${esc(para)}</p>`).join("")}
         ${p.supporterImage ? `<figure class="doc-figure hp-supporter"><div class="img-wrap"><img src="${p.supporterImage}" alt="" onerror="this.parentNode.classList.add('img-missing')"></div></figure>` : ""}
+        ${p.secret ? `
+          <div class="hp-secret">
+            ${p.secret.clueLines.map((l) => `<p class="hp-line">${esc(l)}</p>`).join("")}
+            <div class="secret-envelope" data-secret-click="${pageId}">${esc(p.secret.envelopeCaption || "✉")}</div>
+            <div class="secret-reveal" id="secretReveal" style="display:none;">
+              <div class="news-masthead">${esc(p.secret.revealTitle)}</div>
+              ${p.secret.revealBody.map((l) => `<p>${esc(l)}</p>`).join("")}
+            </div>
+          </div>` : ""}
         ${p.news ? `
           <div class="hp-news">
             <div class="news-masthead">News</div>
@@ -417,6 +427,20 @@ function onMainClick(ev) {
 
   const sub = ev.target.closest("[data-submit]");
   if (sub) { submitQuiz(sub.getAttribute("data-submit")); return; }
+
+  // 봉투 N번 클릭 → 숨겨진 회원 페이지 공개
+  const sec = ev.target.closest("[data-secret-click]");
+  if (sec) {
+    const page = STORY.pages[sec.getAttribute("data-secret-click")];
+    const need = (page && page.secret && page.secret.clicks) || 5;
+    state.secretClicks = (state.secretClicks || 0) + 1;
+    sec.classList.add("clicked");
+    if (state.secretClicks >= need) {
+      const rev = document.getElementById("secretReveal");
+      if (rev) rev.style.display = "block";
+    }
+    return;
+  }
 }
 
 // 북마크 목록 클릭 (사이드바)

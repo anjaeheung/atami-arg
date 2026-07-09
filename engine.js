@@ -27,8 +27,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   // 메인 영역 클릭 위임
   $main().addEventListener("click", onMainClick);
+  // 이미지 확대(라이트박스) 닫기
+  document.getElementById("lightbox").addEventListener("click", closeLightbox);
   render();
 });
+
+function openLightbox(src) {
+  const box = document.getElementById("lightbox");
+  document.getElementById("lightboxImg").src = src;
+  box.classList.remove("hidden");
+}
+function closeLightbox() {
+  document.getElementById("lightbox").classList.add("hidden");
+}
 
 /* ------------------------------ 라우팅 ------------------------------ */
 function openPage(id) {
@@ -319,6 +330,10 @@ function showToast(text) {
 
 /* --------------------------- 이벤트 위임 --------------------------- */
 function onMainClick(ev) {
+  // 기사/HP 이미지 클릭 → 확대 (실제로 로드된 이미지일 때만)
+  const img = ev.target.closest(".doc-figure img");
+  if (img && img.naturalWidth > 0) { openLightbox(img.src); return; }
+
   const nav = ev.target.closest("[data-nav]");
   if (nav) { openPage(nav.getAttribute("data-nav")); return; }
 

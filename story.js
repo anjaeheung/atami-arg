@@ -66,7 +66,7 @@ const STORY = {
         { quiz: {
             question: "Q1. 촬영일은 언제? (사진 속 단서를 찾아보자)",
             fields: [
-              { type: "text", placeholder: "예: 5월 1일",
+              { type: "text", placeholder: "예: ○월 ○일",
                 answers: ["5月1日", "5월1일", "5월 1일", "5.1", "5/1", "5-1", "0501"] },
             ],
         }},

@@ -13,19 +13,23 @@
     <aside id="sidebar" class="collapsed">
       <button id="bmHandle" aria-label="북마크 열기">
         <span class="bm-ico">📖</span>
-        <span class="bm-label">ブックマーク</span>
+        <span class="bm-label">북마크</span>
       </button>
       <div id="bmPanel">
         <div id="bmTypes">
           <span>🌐<br>HP</span>
-          <span>📝<br>NEWS</span>
-          <span>💬<br>掲示板</span>
+          <span>📝<br>뉴스</span>
+          <span>💬<br>게시판</span>
         </div>
         <ul id="bmList"><!-- 북마크 항목 --></ul>
       </div>
     </aside>
 
     <div id="toast"></div>
+
+    <div id="lightbox" class="hidden">
+      <img id="lightboxImg" src="" alt="">
+    </div>
   </div>
 
   <script src="story.js"></script>

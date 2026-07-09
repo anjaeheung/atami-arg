@@ -148,14 +148,24 @@ body{
 .hp-title{font-size:26px;color:var(--purple);padding:26px 28px 8px;margin:0;}
 
 .doc-figure{margin:16px 28px;}
+/* 뉴스 기사: 사진을 오른쪽에 띄우고 본문이 감싸게 */
+.news .doc-figure{float:right;width:300px;max-width:44%;margin:8px 28px 10px 20px;}
 .img-wrap{background:#e6e6e6;border-radius:3px;overflow:hidden;min-height:60px;}
-.img-wrap img{display:block;max-width:100%;height:auto;}
+.img-wrap img{display:block;max-width:100%;height:auto;cursor:zoom-in;}
 .img-missing{
   position:relative;min-height:150px;
   display:flex;align-items:center;justify-content:center;
 }
 .img-missing::after{content:"이미지 자리";color:#999;font-size:13px;}
 .doc-figure figcaption{color:#666;font-size:13px;margin-top:6px;}
+
+/* 이미지 확대(라이트박스) */
+#lightbox{
+  position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;
+  display:flex;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;
+}
+#lightbox.hidden{display:none;}
+#lightbox img{max-width:95%;max-height:95%;box-shadow:0 6px 40px rgba(0,0,0,.6);border-radius:2px;}
 
 /* ---------------------------- 북마크 사이드바 ---------------------------- */
 #sidebar{position:fixed;top:0;right:0;height:100%;z-index:40;display:flex;}
@@ -205,4 +215,5 @@ body{
   .logo-text{font-size:42px;}
   #bmPanel{width:82vw;}
   .news-masthead{font-size:34px;}
+  .news .doc-figure{float:none;width:auto;max-width:none;margin:12px 20px;}
 }

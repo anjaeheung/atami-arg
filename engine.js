@@ -138,6 +138,7 @@ function showOutro(sceneId) {
 
 function finishOutro(sceneId) {
   const o = getScene(sceneId).outro;
+  if (o && o.finale) { startFinale(); return; }   // 최종 피날레로
   if (o && o.unlocks) {
     const next = getScene(o.unlocks);
     if (next && !next.wip) {   // 제작 중(wip) 스레드는 일반 플레이어에게 열지 않음 (#dev는 devJump로 접근)
@@ -146,6 +147,72 @@ function finishOutro(sceneId) {
     }
   }
   openPage("board");
+}
+
+/* ----------------------- 최종 피날레 ----------------------- */
+function startFinale() {
+  state.finaleStep = 0;
+  renderFinale();
+}
+
+function renderFinale() {
+  const f = STORY.finale;
+  state.animToken++;
+  if (state.finaleStep === 0) {          // 축하합니다 + 허무함
+    $main().innerHTML = `
+      <div class="finale-congrats">
+        <div class="finale-congrats-head">${esc(f.congrats.heading)}</div>
+        <div class="finale-narr">
+          ${f.congrats.lines.map((l) => l === "" ? `<div class="intro-gap"></div>` : `<p>${esc(l)}</p>`).join("")}
+        </div>
+        <button class="outro-btn" data-finale-next="1">${esc(f.congrats.button || "계속")}</button>
+      </div>`;
+  } else if (state.finaleStep === 1) {   // 1개월 후 이메일 + 최종 문제
+    $main().innerHTML = `
+      <div class="finale-mail">
+        <p class="finale-transition">${esc(f.transition)}</p>
+        <div class="email-box">
+          <div class="email-from">${esc(f.emailFrom)}</div>
+          ${f.emailLines.map((l) => l.t === "" ? `<div class="email-gap"></div>` : `<p class="${l.red ? "email-red" : ""}">${esc(l.t)}</p>`).join("")}
+        </div>
+      </div>
+      <div class="final-quiz">
+        <div class="final-quiz-title">${esc(f.finalQuizTitle)}</div>
+        <div class="final-quiz-q">${esc(f.finalQuizQuestion)}</div>
+        <input class="final-quiz-input" id="finalQuizInput" type="text" autocomplete="off">
+        <div class="final-quiz-msg" id="finalQuizMsg"></div>
+        <button class="final-quiz-btn" data-finale-submit="1">송신</button>
+      </div>`;
+    const inp = document.getElementById("finalQuizInput");
+    if (inp) inp.addEventListener("keydown", (ev) => { if (ev.key === "Enter") submitFinalQuiz(); });
+  } else {                               // 진 엔딩
+    $main().innerHTML = `
+      <div class="outro finale-ending">
+        <div class="outro-text">
+          ${f.ending.lines.map((l) => l === "" ? `<div class="intro-gap"></div>` : `<p>${esc(l)}</p>`).join("")}
+        </div>
+        ${f.ending.video ? `
+          <div class="finale-video-wrap"><div class="finale-video-ratio">
+            <iframe src="https://www.youtube.com/embed/${esc(f.ending.video)}" title="ending"
+              frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div></div>` : ""}
+      </div>`;
+  }
+  window.scrollTo(0, 0);
+}
+
+function submitFinalQuiz() {
+  const f = STORY.finale;
+  const val = (document.getElementById("finalQuizInput") || {}).value || "";
+  const ok = (f.finalQuizAnswers || []).map(norm).includes(norm(val));
+  if (ok) {
+    state.finaleStep = 2;
+    renderFinale();
+  } else {
+    const m = document.getElementById("finalQuizMsg");
+    if (m) { m.textContent = "정답이 아닙니다. 다시 시도해 보세요."; m.classList.add("wrong"); }
+  }
 }
 
 /* --------------------------- 게시판 톱 --------------------------- */
@@ -540,6 +607,12 @@ function onMainClick(ev) {
 
   const outroC = ev.target.closest("[data-outro-continue]");
   if (outroC) { finishOutro(outroC.getAttribute("data-outro-continue")); return; }
+
+  const finNext = ev.target.closest("[data-finale-next]");
+  if (finNext) { state.finaleStep = parseInt(finNext.getAttribute("data-finale-next"), 10); renderFinale(); return; }
+
+  const finSub = ev.target.closest("[data-finale-submit]");
+  if (finSub) { submitFinalQuiz(); return; }
 
   const sub = ev.target.closest("[data-submit]");
   if (sub) { submitQuiz(sub.getAttribute("data-submit")); return; }

@@ -32,7 +32,47 @@ document.addEventListener("DOMContentLoaded", () => {
   // 이미지 확대(라이트박스) 닫기
   document.getElementById("lightbox").addEventListener("click", closeLightbox);
   render();
+  if (isDev()) buildDevPanel();   // URL에 #dev → 개발용 점프 패널
 });
+
+/* ----------------------- 개발용 점프 패널 ----------------------- */
+function isDev() {
+  try { return /dev/i.test(location.hash) || /dev/i.test(location.search); }
+  catch (e) { return false; }
+}
+
+function buildDevPanel() {
+  const el = document.createElement("div");
+  el.id = "devPanel";
+  let html = `<div class="dev-title">DEV 점프 (문제별로 바로 이동)</div>`;
+  STORY.scenes.forEach((sc) => {
+    const n = sc.entries.filter((e) => e.quiz).length;
+    html += `<div class="dev-scene"><span>${esc(sc.title.slice(0, 6))}…</span>`;
+    html += `<button data-devjump="${sc.id}" data-devsolved="0">처음</button>`;
+    for (let q = 1; q <= n; q++) {
+      html += `<button data-devjump="${sc.id}" data-devsolved="${q - 1}">Q${q}</button>`;
+    }
+    html += `<button data-devjump="${sc.id}" data-devsolved="${n}">끝</button></div>`;
+  });
+  el.innerHTML = html;
+  document.body.appendChild(el);
+  el.addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-devjump]");
+    if (b) devJump(b.getAttribute("data-devjump"), parseInt(b.getAttribute("data-devsolved"), 10));
+  });
+}
+
+function devJump(sceneId, solvedCount) {
+  state.unlockedScenes.add(sceneId);
+  state.solved[sceneId] = solvedCount;
+  state.answers[sceneId] = state.answers[sceneId] || {};
+  state.shown[sceneId] = 999999;   // 전부 즉시 표시(등장 애니메이션 없음)
+  state.current = sceneId;
+  render();
+  const q = document.querySelector(".quiz-box") || document.querySelector(".thread-exit");
+  if (q) q.scrollIntoView({ block: "center" });
+  else window.scrollTo(0, 0);
+}
 
 function openLightbox(src) {
   const box = document.getElementById("lightbox");

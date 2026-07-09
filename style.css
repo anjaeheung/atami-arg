@@ -155,9 +155,17 @@ body{
   padding:16px 20px;margin:0 0 8px;letter-spacing:2px;
   font-family:"Yu Mincho","MS Mincho",serif;
 }
-.hp .doc-figure{text-align:center;}
-.hp .img-wrap{display:inline-block;min-width:220px;}
+.hp>.doc-figure{text-align:center;}
+.hp>.doc-figure .img-wrap{display:inline-block;min-width:220px;}
 .hp-line{text-align:center;color:#333;}
+
+/* HP 하단 News 공지 블록 */
+.hp-news{margin-top:30px;padding:0 0 8px;border-top:1px solid #eee;}
+.hp-news .news-masthead{border-bottom:3px solid var(--news-red);padding-bottom:6px;margin:24px 28px 0;}
+.hp-news-title{font-size:20px;color:#222;padding:18px 28px 6px;margin:0;}
+.hp-news p{text-align:left;}
+.hp-news .doc-figure{margin:14px 28px;}
+.hp-news .img-wrap{display:block;}
 
 .doc-figure{margin:16px 28px;}
 /* 뉴스 기사: 사진을 오른쪽에 띄우고 본문이 감싸게 */

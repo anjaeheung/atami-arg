@@ -310,6 +310,13 @@ function renderDocument(pageId) {
         ${p.banner ? `<div class="hp-banner">${esc(p.banner)}</div>` : ""}
         ${(p.images || []).map(imgHtml).join("")}
         ${p.body.map((para) => para === "" ? "" : `<p class="hp-line">${esc(para)}</p>`).join("")}
+        ${p.news ? `
+          <div class="hp-news">
+            <div class="news-masthead">News</div>
+            <h2 class="hp-news-title">${esc(p.news.title)}</h2>
+            ${p.news.body.map((para) => `<p>${esc(para)}</p>`).join("")}
+            ${(p.news.images || []).map(imgHtml).join("")}
+          </div>` : ""}
       </div>`;
   }
 }

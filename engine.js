@@ -286,8 +286,10 @@ function renderDocument(pageId) {
 
 function imgHtml(img) {
   const o = typeof img === "string" ? { src: img } : img;
+  // o.full: 클릭 확대 시 보여줄 별도(고해상도/확대) 이미지. 없으면 기사 이미지를 그대로 확대
+  const full = o.full ? ` data-full="${o.full}"` : "";
   return `<figure class="doc-figure">
-      <div class="img-wrap"><img src="${o.src}" alt=""
+      <div class="img-wrap"><img src="${o.src}"${full} alt=""
         onerror="this.parentNode.classList.add('img-missing')"></div>
       ${o.caption ? `<figcaption>${esc(o.caption)}</figcaption>` : ""}
     </figure>`;
@@ -332,7 +334,7 @@ function showToast(text) {
 function onMainClick(ev) {
   // 기사/HP 이미지 클릭 → 확대 (실제로 로드된 이미지일 때만)
   const img = ev.target.closest(".doc-figure img");
-  if (img && img.naturalWidth > 0) { openLightbox(img.src); return; }
+  if (img && img.naturalWidth > 0) { openLightbox(img.dataset.full || img.src); return; }
 
   const nav = ev.target.closest("[data-nav]");
   if (nav) { openPage(nav.getAttribute("data-nav")); return; }

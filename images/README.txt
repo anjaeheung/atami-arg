@@ -2,11 +2,15 @@
 story.js 의 이미지 경로와 파일명이 일치하면 자동으로 표시됩니다.
 
 [현재 슬라이스에서 쓰는 이미지 슬롯]
-- logo.png            소문채널(噂ちゃんねる) 항아리 로고  (board.logoImage)
-- news_missing_1.jpg  실종 뉴스 기사 사진               (news_missing.images[0])
+- logo.png                소문채널(噂ちゃんねる) 항아리 로고   (board.logoImage)
+- news_missing_1.jpg      실종 뉴스 기사에 뜨는 얼굴 사진      (news_missing.images[0].src)
+- news_missing_1_big.jpg  기사 사진을 "클릭 확대"했을 때의 확대판 (news_missing.images[0].full)
 
 파일명은 위와 똑같이 맞춰서 넣으면 되고,
 다른 이름을 쓰고 싶으면 story.js 의 해당 경로만 바꾸면 됩니다.
+
+※ 확대판(_big)을 따로 안 만들 거면 story.js 에서 그 이미지의 "full" 줄만 지우세요.
+  그러면 기사 사진을 그대로 크게 띄웁니다.
 
 스토리가 이어지면 여기에 뉴스/HP 이미지 슬롯이 더 늘어납니다
 (예: 익사체 뉴스 사진, 개발추진협회 미술관 조감도 등).

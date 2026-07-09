@@ -532,7 +532,14 @@ const STORY = {
         { post: 6, uid: "y4zmtcaus", body: "확실히, 뉴스에서는 만쥬를 먹고 나서…라고 적혀 있었지" },
         { post: 7, uid: "kk3whcd7z", body: "신만주(シンマンジュウ) 홈페이지 찾았다", link: { to: "hp_shinmanju", label: "▶ 신만주 HP" } },
         { post: 8, uid: "ggh7cgd3k", body: "시중에 파는 만주 아니냐?\n먹어도 몸 상태 안 나빠지지 않냐" },
-        { quiz: { question: "Q. 신만주를 먹고 몸 상태가 나빠진 이유는?", fields: [{ type: "text", placeholder: "입력", answers: ["幸福草ミツロ", "幸福草 ミツロ", "행복초미츠로", "행복초 미츠로", "미츠로", "ミツロ", "幸福草", "행복초"] }] } },
+        { quiz: {
+            question: "Q. 신만주를 먹고 몸 상태가 나빠진 이유는?",
+            fields: [
+              { type: "text", label: "마나카 아이가 먹은 신만주에는", answers: ["ミツロ", "미츠로", "みつろ", "ロロロ", "로로로"] },
+              { type: "text", label: "별명", answers: ["幸福草", "행복초", "こうふくそう"] },
+              { text: "가 들어 있었다" },
+            ],
+        } },
         { post: 9, uid: "fuy74aanh", body: "알았다!\n마나카 아이가 먹은 신만주에는 미츠로, 즉 별명 행복초가 들어 있었다" },
         { post: 10, uid: "y4zmtcaus", body: "뭐?\n행복초라면 신주를 죽인 미타 토라타가 가지고 있던 위험한 식물 아니냐\n환각 작용 있지 않았냐?" },
         { post: 11, uid: "kk3whcd7z", body: "그런 게 들어간 만주를 판다고!?" },

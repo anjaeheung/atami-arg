@@ -370,7 +370,9 @@ function renderDocument(pageId) {
         ${(p.images || []).map(imgHtml).join("")}
         ${p.body.map((para) => `<p>${esc(para)}</p>`).join("")}
       </div>`;
-  } else { // hp
+  } else if (p.blocks) {  // 섹션(blocks) 구조의 HP
+    $main().innerHTML = renderHpStructured(p, pageId, back);
+  } else { // 기존 단순 HP
     $main().innerHTML = `
       <div class="doc hp">
         ${back}
@@ -382,15 +384,7 @@ function renderDocument(pageId) {
         ${(p.images || []).map(imgHtml).join("")}
         ${p.body.map((para) => para === "" ? "" : `<p class="hp-line">${esc(para)}</p>`).join("")}
         ${p.supporterImage ? `<figure class="doc-figure hp-supporter"><div class="img-wrap"><img src="${p.supporterImage}" alt="" onerror="this.parentNode.classList.add('img-missing')"></div></figure>` : ""}
-        ${p.secret ? `
-          <div class="hp-secret">
-            ${p.secret.clueLines.map((l) => `<p class="hp-line">${esc(l)}</p>`).join("")}
-            <div class="secret-envelope" data-secret-click="${pageId}">${esc(p.secret.envelopeCaption || "✉")}</div>
-            <div class="secret-reveal" id="secretReveal" style="display:none;">
-              <div class="news-masthead">${esc(p.secret.revealTitle)}</div>
-              ${p.secret.revealBody.map((l) => `<p>${esc(l)}</p>`).join("")}
-            </div>
-          </div>` : ""}
+        ${p.secret ? renderSecret(p, pageId) : ""}
         ${p.news ? `
           <div class="hp-news">
             <div class="news-masthead">News</div>
@@ -400,6 +394,67 @@ function renderDocument(pageId) {
           </div>` : ""}
       </div>`;
   }
+}
+
+// 봉투 5번 클릭 → 회원 전용 숨겨진 페이지
+function renderSecret(p, pageId) {
+  const s = p.secret;
+  return `<div class="hp-secret">
+      ${s.heading ? `<h2 class="hp-bh">${esc(s.heading)}</h2>` : ""}
+      ${(s.clueLines || []).map((l) => `<p class="hp-line">${esc(l)}</p>`).join("")}
+      <div class="secret-envelope" data-secret-click="${pageId}">
+        ${s.envelopeImage ? `<img src="${s.envelopeImage}" alt="" onerror="this.style.display='none'">` : ""}
+        <div class="secret-envcap">${esc(s.envelopeCaption || "✉ 5번 눌러보세요")}</div>
+      </div>
+      <div class="secret-reveal" id="secretReveal" style="display:none;">
+        <div class="news-masthead">${esc(s.revealTitle)}</div>
+        ${s.revealBody.map((l) => `<p>${esc(l)}</p>`).join("")}
+      </div>
+    </div>`;
+}
+
+// 섹션 구조 HP (히어로 + 로고 + blocks + 봉투)
+function renderHpStructured(p, pageId, back) {
+  let h = `<div class="doc hp hp-structured">${back}`;
+  h += `<div class="hp-brand">${p.logoImage ? `<img src="${p.logoImage}" alt="" onerror="this.style.display='none'">` : ""}<span>${esc(p.title)}</span></div>`;
+  if (p.hero) {
+    h += `<div class="hp-hero"${p.hero.image ? ` style="background-image:url('${p.hero.image}')"` : ""}>
+        <div class="hp-hero-text">${esc(p.hero.banner)}</div>
+        ${p.hero.sub ? `<div class="hp-hero-sub">${esc(p.hero.sub)}</div>` : ""}
+      </div>`;
+  }
+  if (p.centerLogoImage) {
+    h += `<div class="hp-centerlogo"><img src="${p.centerLogoImage}" alt="" onerror="this.style.display='none'"><div>${esc(p.title)}</div></div>`;
+  }
+  (p.blocks || []).forEach((b) => {
+    h += `<div class="hp-block">`;
+    if (b.heading) h += `<h2 class="hp-bh">${esc(b.heading)}</h2>`;
+    if (b.center) h += `<p class="hp-calligraphy">${esc(b.center)}</p>`;
+    if (b.lines) h += b.lines.map((l) => `<p class="hp-line">${esc(l)}</p>`).join("");
+    if (b.image) h += imgHtml({ src: b.image, caption: b.caption });
+    if (b.profile) {
+      const pr = b.profile;
+      h += `<div class="hp-profile">
+          ${imgHtml({ src: pr.image })}
+          <div class="hp-profile-info">
+            ${pr.role ? `<div class="hp-pr-role">${esc(pr.role)}</div>` : ""}
+            ${pr.name ? `<div class="hp-pr-name">${esc(pr.name)}</div>` : ""}
+            ${pr.sub ? `<div class="hp-pr-sub">${esc(pr.sub)}</div>` : ""}
+          </div>
+        </div>
+        ${pr.quote ? `<p class="hp-calligraphy">${esc(pr.quote)}</p>` : ""}`;
+    }
+    if (b.members) {
+      h += `<table class="hp-members">
+          <tr><th>명예회원</th><td>${b.members.honorary.map(esc).join("<br>")}</td></tr>
+          <tr><th>일반 회원</th><td>${b.members.general.map(esc).join("<br>")}</td></tr>
+        </table>`;
+    }
+    h += `</div>`;
+  });
+  if (p.secret) h += renderSecret(p, pageId);
+  h += `</div>`;
+  return h;
 }
 
 function imgHtml(img) {

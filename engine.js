@@ -237,8 +237,9 @@ function submitFinalQuiz() {
 }
 
 // 文秋리크스(제보 폼)
-function renderLeak() {
-  const L = STORY.finale.leak;
+function renderLeak(key) {
+  state.leakKey = key || "leak";
+  const L = STORY.finale[state.leakKey];
   state.animToken++;
   let html = `<div class="leak">
       <div class="leak-logo">${esc(L.title)}</div>
@@ -262,7 +263,7 @@ function renderLeak() {
 }
 
 function submitLeak() {
-  const L = STORY.finale.leak;
+  const L = STORY.finale[state.leakKey || "leak"];
   let ok = true;
   L.statements.forEach((st, si) => {
     st.fields.forEach((f, fi) => {
@@ -293,6 +294,37 @@ function submitLeak() {
     const m = document.getElementById("leakMsg");
     if (m) { m.textContent = "아직 맞지 않은 항목이 있습니다."; m.classList.add("wrong"); }
   }
+}
+
+// 神事用饅頭 기록 — 신만주 포스터 쇄골 5번 클릭으로 열리는 검은 페이지
+function renderRecord() {
+  const r = STORY.finale.record;
+  state.animToken++;
+  const entries = r.entries.map((e) => `
+      <div class="record-entry">
+        <div class="record-date">${esc(e.date)}</div>
+        <div class="record-row"><span class="record-k">구매자</span> ${esc(e.buyer)}</div>
+        <div class="record-row"><span class="record-k">사용 대상</span> ${esc(e.target)}</div>
+      </div>`).join("");
+  const rules = r.rules.map((l) => `<li>${esc(l)}</li>`).join("");
+  $main().innerHTML = `<div class="record-page">
+      <h2 class="record-title">${esc(r.title)}</h2>
+      <div class="record-list">${entries}</div>
+      <ul class="record-rules">${rules}</ul>
+      <button class="record-close" data-record-close="1">${esc(r.closeButton)}</button>
+    </div>`;
+  window.scrollTo(0, 0);
+}
+
+// 기록 닫기 → 내레이션 → 최종 文秋리크스
+function renderRecordAfter() {
+  const r = STORY.finale.record;
+  const lines = r.afterLines.map((l) => l === "" ? `<div class="intro-gap"></div>` : `<p>${esc(l)}</p>`).join("");
+  $main().innerHTML = `<div class="outro">
+      <div class="outro-text">${lines}</div>
+      <button class="outro-btn" data-record-next="1">${esc(r.nextButton || "계속")}</button>
+    </div>`;
+  window.scrollTo(0, 0);
 }
 
 /* --------------------------- 게시판 톱 --------------------------- */
@@ -599,6 +631,14 @@ function renderHpStructured(p, pageId, back) {
     if (b.plainImage) h += `<div class="hp-plain-img"><img src="${b.plainImage}" alt="" onerror="this.style.display='none'"></div>`;
     if (b.lines) h += b.lines.map((l) => `<p class="hp-line">${esc(l)}</p>`).join("");
     if (b.image) h += imgHtml({ src: b.image, caption: b.caption });
+    if (b.posterSecret) {
+      const ps = b.posterSecret, hs = ps.hotspot || { left: "20%", top: "45%", width: "16%", height: "9%" };
+      h += `<div class="poster-secret">
+          <img src="${ps.image}" alt="" onerror="this.style.display='none'">
+          <button class="poster-mark" data-poster-secret="${ps.clicks || 5}" aria-label=""
+            style="left:${hs.left};top:${hs.top};width:${hs.width};height:${hs.height};"></button>
+        </div>`;
+    }
     if (b.profile) {
       const pr = b.profile;
       h += `<div class="hp-profile">
@@ -695,10 +735,26 @@ function onMainClick(ev) {
   if (finSub) { submitFinalQuiz(); return; }
 
   const finLeak = ev.target.closest("[data-finale-leak]");
-  if (finLeak) { renderLeak(); return; }
+  if (finLeak) { renderLeak("leak"); return; }
 
   const finLeakSub = ev.target.closest("[data-finale-leak-submit]");
   if (finLeakSub) { submitLeak(); return; }
+
+  // 신만주 포스터 쇄골 N번 클릭 → 神事用饅頭 기록
+  const posterSec = ev.target.closest("[data-poster-secret]");
+  if (posterSec) {
+    const need = parseInt(posterSec.getAttribute("data-poster-secret"), 10) || 5;
+    state.posterClicks = (state.posterClicks || 0) + 1;
+    posterSec.classList.add("clicked");
+    if (state.posterClicks >= need) { state.posterClicks = 0; renderRecord(); }
+    return;
+  }
+
+  const recClose = ev.target.closest("[data-record-close]");
+  if (recClose) { renderRecordAfter(); return; }
+
+  const recNext = ev.target.closest("[data-record-next]");
+  if (recNext) { renderLeak("leak2"); return; }
 
   const goScene = ev.target.closest("[data-goscene]");
   if (goScene) { const s = goScene.getAttribute("data-goscene"); state.unlockedScenes.add(s); openPage(s); return; }

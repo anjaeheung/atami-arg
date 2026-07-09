@@ -665,6 +665,8 @@ const STORY = {
         ] },
       ],
       submit: "전송",
+      endingMovie: "Xj535-wQFvU",           // 고발(송신) 후 재생되는 엔딩 무비
+      endingMovieButton: "엔딩 무비를 재생한다",
       successHead: "정보 제공 감사합니다.",
       successLines: [
         "당신이 유출한 것으로 인해 개발추진협회의 악행은 만천하에 드러났다.",

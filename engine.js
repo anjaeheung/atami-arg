@@ -275,6 +275,9 @@ function submitLeak() {
   if (ok) {
     const pv = L.postPreview;
     const linesHtml = (arr) => arr.map((l) => l === "" ? `<div class="intro-gap"></div>` : `<p>${esc(l)}</p>`).join("");
+    const movieHtml = L.endingMovie ? `<div class="ending-movie-slot" id="endingMovieSlot">
+        <button class="leak-open-btn" data-play-movie="${esc(L.endingMovie)}">${esc(L.endingMovieButton || "엔딩 무비를 재생한다")}</button>
+      </div>` : "";
     const nextScene = L.nextThread ? getScene(L.nextThread) : null;
     let nextHtml = "";
     if (nextScene && !nextScene.wip) nextHtml = `<button class="outro-btn" data-goscene="${esc(L.nextThread)}">${esc(L.nextButton || "계속")}</button>`;
@@ -282,6 +285,7 @@ function submitLeak() {
     $main().innerHTML = `<div class="outro finale-ending">
         ${L.successHead ? `<div class="finale-thanks">${esc(L.successHead)}</div>` : ""}
         <div class="outro-text">${linesHtml(L.successLines)}</div>
+        ${movieHtml}
         ${pv ? `<div class="finale-postbox">
           <div class="post-meta"><span class="pno">${pv.no}:</span> <span class="pname">익명</span> <span class="pdate">20XX/09/26</span> <span class="pid">ID:${esc(pv.uid)}</span></div>
           <div class="finale-postbody">${esc(pv.body)}</div>
@@ -755,6 +759,19 @@ function onMainClick(ev) {
 
   const recNext = ev.target.closest("[data-record-next]");
   if (recNext) { renderLeak("leak2"); return; }
+
+  // 엔딩 무비 재생 버튼 → 유튜브 임베드로 교체
+  const playMovie = ev.target.closest("[data-play-movie]");
+  if (playMovie) {
+    const id = playMovie.getAttribute("data-play-movie");
+    const slot = document.getElementById("endingMovieSlot");
+    if (slot) slot.innerHTML = `<div class="finale-video-wrap"><div class="finale-video-ratio">
+        <iframe src="https://www.youtube.com/embed/${id}?autoplay=1" title="ending"
+          frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div></div>`;
+    return;
+  }
 
   const goScene = ev.target.closest("[data-goscene]");
   if (goScene) { const s = goScene.getAttribute("data-goscene"); state.unlockedScenes.add(s); openPage(s); return; }

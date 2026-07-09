@@ -10,6 +10,7 @@ const state = {
   current: "intro",       // 지금 메인에 보이는 페이지 id (intro | board | sceneId | pageId)
   returnTo: null,         // 뉴스/HP에서 "게시판으로 돌아가기" 대상
   solved: {},             // sceneId -> 푼 문제 개수
+  answers: {},            // sceneId -> { 문제 entry 인덱스 -> 플레이어가 입력한 정답 텍스트 }
   shown: {},              // sceneId -> 이미 애니메이션 없이 표시된 마지막 entry 인덱스
   bookmarkIds: new Set(),
   bookmarks: [],          // [{id, icon, title}]
@@ -124,16 +125,23 @@ function renderThread(sceneId) {
   const postsEl = document.getElementById("posts");
   const lastShown = state.shown[sceneId] ?? -1;
 
-  // gate 이전의 post entry들 (문제 entry는 건너뜀)
+  // gate 이전의 표시 대상: 일반 글 + 이미 푼 문제의 "정답 글"(플레이어 입력)
   const postEntries = [];
   for (let i = 0; i < gateIndex; i++) {
-    if (entries[i].post != null) postEntries.push({ e: entries[i], i });
+    const e = entries[i];
+    if (e.post != null) {
+      postEntries.push({ i, data: e });
+    } else if (e.quiz) {
+      const ap = e.quiz.answerPost || {};
+      const ans = (state.answers[sceneId] || {})[i] || "";
+      postEntries.push({ i, data: { post: ap.post, uid: ap.uid, body: ans } });
+    }
   }
 
   const immediate = postEntries.filter((p) => p.i <= lastShown);
   const toAnimate = postEntries.filter((p) => p.i > lastShown);
 
-  immediate.forEach((p) => postsEl.appendChild(postEl(p.e)));
+  immediate.forEach((p) => postsEl.appendChild(postEl(p.data)));
 
   const finish = () => {
     state.shown[sceneId] = gateIndex - 1;
@@ -155,7 +163,7 @@ function renderThread(sceneId) {
   let k = 0;
   const step = () => {
     if (myToken !== state.animToken) return;   // 그새 다른 페이지로 이동 → 중단
-    const el = postEl(toAnimate[k].e);
+    const el = postEl(toAnimate[k].data);
     el.classList.add("reveal");
     postsEl.appendChild(el);
     k++;
@@ -223,10 +231,11 @@ function submitQuiz(sceneId) {
   const scene = getScene(sceneId);
   const solvedCount = state.solved[sceneId] || 0;
 
-  // 현재 gate 문제 다시 찾기
-  let quizSeen = 0, quiz = null;
-  for (const e of scene.entries) {
-    if (e.quiz) { quizSeen++; if (quizSeen === solvedCount + 1) { quiz = e.quiz; break; } }
+  // 현재 gate 문제 다시 찾기 (entry 인덱스도 기억)
+  let quizSeen = 0, quiz = null, quizIndex = -1;
+  for (let i = 0; i < scene.entries.length; i++) {
+    const e = scene.entries[i];
+    if (e.quiz) { quizSeen++; if (quizSeen === solvedCount + 1) { quiz = e.quiz; quizIndex = i; break; } }
   }
   if (!quiz) return;
 
@@ -245,8 +254,17 @@ function submitQuiz(sceneId) {
 
   const msg = document.getElementById("quizMsg");
   if (ok) {
+    // 플레이어가 입력/선택한 내용을 "정답 글" 본문으로 조립 (고정텍스트 + 입력값)
+    const answerText = quiz.fields.map((f, i) => {
+      if (f.text != null) return f.text;
+      const el = document.querySelector(`[data-fi="${i}"]`);
+      return el ? el.value : "";
+    }).join("").replace(/\s+/g, " ").trim();
+    state.answers[sceneId] = state.answers[sceneId] || {};
+    state.answers[sceneId][quizIndex] = answerText;
+
     state.solved[sceneId] = solvedCount + 1;
-    renderThread(sceneId);            // 다음 글들이 순차 등장
+    renderThread(sceneId);            // 정답 글 + 다음 글들이 순차 등장
   } else {
     msg.textContent = "정답이 아닙니다. 다시 시도해 보세요.";
     msg.classList.add("wrong");

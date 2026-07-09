@@ -64,6 +64,7 @@ const STORY = {
 
         { quiz: {
             question: "Q1. 촬영일은 언제? (사진 속 단서를 찾아보자)",
+            answerPost: { post: 10, uid: "k2p9wxz1q" },   // 정답 맞히면 내가 쓴 답이 10번 글로
             fields: [
               { type: "text", placeholder: "예: ○월 ○일",
                 answers: ["5月1日", "5월1일", "5월 1일", "5.1", "5/1", "5-1", "0501"] },
@@ -81,6 +82,7 @@ const STORY = {
 
         { quiz: {
             question: "Q2. 아타미 출신 모델의 풀네임은?",
+            answerPost: { post: 19, uid: "k2p9wxz1q" },
             fields: [
               { type: "text", placeholder: "이름 입력",
                 answers: ["真中あい", "真中愛", "마나카아이", "마나카 아이"] },
@@ -101,6 +103,7 @@ const STORY = {
 
         { quiz: {
             question: "Q3. 25페이지 사진 속, 마나카 아이는 어디서 누구와 무엇을 하고 있나?",
+            answerPost: { post: 30, uid: "k2p9wxz1q" },
             fields: [
               { type: "select", answer: "음식점",
                 options: ["역 앞", "음식점", "온천", "여관", "바다", "해변", "공원"] },

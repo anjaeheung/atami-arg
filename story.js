@@ -144,7 +144,6 @@ const STORY = {
 
         { quiz: {
             question: "Q. 25페이지 외에 마나카 요스케 본인이 (우연히) 찍혀 있다. 어떤 순간이 찍혀 있는가?",
-            answerPost: { post: 44, uid: "k2p9wxz1q" },
             fields: [
               { type: "select", answer: "낚시 도구",
                 options: ["반지", "펜던트", "100만 엔", "계약서", "톱(노코기리)", "낚시 도구"] },
@@ -155,6 +154,63 @@ const STORY = {
               { type: "select", answer: "타기",
                 options: ["뛰어들기", "타기", "수리하기", "구매하기", "몸싸움", "맡기기", "매각하기"] },
               { text: " 직전" },
+            ],
+        }},
+
+        { post: 44, uid: "fuy74aanh", body: "55페이지에, 낚시 도구를 들고 차에 타기 직전이 찍혀 있어" },
+        { post: 45, uid: "44xifpydf", body: "진짜네\n자세히 보니까 낚싯대 잔뜩 챙겨 들고 있네" },
+        { post: 46, uid: "3u3jauat4", body: "부동산 사장답지 않은 패밀리카네" },
+        { post: 47, uid: "c9xtzkcnx", body: "이 차 타고 어디로 낚시하러 간 건가" },
+        { post: 48, uid: "swb86w59c", body: "이 사진이 마나카 아이랑 만난 뒤라면, 어디로 향한 걸까" },
+
+        { quiz: {
+            question: "Q. 마나카 요스케는 어디로 향했는가? 마지막으로 다다랐을 장소의 이름을 입력하시오.",
+            fields: [
+              { type: "text", placeholder: "장소 이름 입력",
+                answers: ["海釣り公園", "海釣公園", "바다낚시공원", "바다 낚시 공원", "해조리공원"] },
+            ],
+        }},
+
+        { post: 49, uid: "fuy74aanh", body: "바다낚시공원이다!" },
+        { post: 50, uid: "d5ehz2nyr", body: "엥? 명탐정이잖아" },
+        { post: 51, uid: "3u3jauat4", body: "진짜다\n바다낚시공원에 사장 차가 찍혀 있어" },
+        { post: 52, uid: "c9xtzkcnx", body: "정장 차림 그대로 혼자 낚시하러 간 건가…?" },
+        { post: 53, uid: "swb86w59c", body: "낚시하는 모습은 안 찍혀 있는 것 같은데, 어디 있는 거지?" },
+
+        { quiz: {
+            question: "Q. 마나카 요스케는 바다낚시공원의 어디에 있는가?",
+            fields: [
+              { type: "text", placeholder: "입력",
+                answers: ["海の中", "바닷속", "바다 속", "바다속", "물속", "물 속"] },
+            ],
+        }},
+
+        { post: 54, uid: "fuy74aanh", body: "바닷속에 있어…" },
+        { post: 55, uid: "3u3jauat4", body: "엥" },
+        { post: 56, uid: "44xifpydf", body: "헐헐헐헐헐\n사장이 (물에) 떠 있는 게 찍혀 있는데!" },
+        { post: 57, uid: "7x9zfhh9s", body: "지금까지 조용히 스레 보고만 있었는데 신고했다" },
+        { post: 58, uid: "c9xtzkcnx", body: ">>57\n아니, 이거 3개월도 더 전 일이라\n지금 신고해서 어쩌라는 거야" },
+        { post: 59, uid: "d5ehz2nyr", body: "이 사진집 진짜 괜찮은 거냐…" },
+        { post: 60, uid: "c9xtzkcnx", body: "뉴스 떴다",
+          link: { to: "news_drowned", label: "▶ 지역 부동산 회사 사장 마나카 요스케 씨  익사체로 발견" } },
+        { post: 61, uid: "44xifpydf", body: "카메라맨 증언대로면 바다낚시공원엔 아무도 없었던 것 같네" },
+        { post: 62, uid: "3u3jauat4", body: "사고사냐 자살이냐는 거야?" },
+        { post: 63, uid: "7x9zfhh9s", body: "죽은 직후를 촬영한 거냐… 무섭다!" },
+        { post: 64, uid: "swb86w59c", body: "응? 이 뉴스 뭔가 이상하지 않냐?" },
+
+        { quiz: {
+            question: "Q. 위 뉴스 기사와 78·79페이지의 사진에서 모순되는 부분은?",
+            fields: [
+              { text: "뉴스에서는 " },
+              { type: "select", answer: "혼자 낚시를 하고 있었다",
+                options: ["시체로 발견되었다", "사망 시각은 같은 날 15시경", "익사로 단정되었다", "혼자 낚시를 하고 있었다"] },
+              { text: " 라고 적혀 있지만, 사진에는 " },
+              { type: "select", answer: "2인분",
+                options: ["고양이", "2인분", "시계", "빨간 차"] },
+              { text: " 의 " },
+              { type: "select", answer: "발자국",
+                options: ["시간의 어긋남", "낚싯대", "발자국", "키 리모컨"] },
+              { text: " 이(가) 있다." },
             ],
         }},
       ],
@@ -192,6 +248,19 @@ const STORY = {
       ],
       images: [
         { src: "images/news_resort_1.jpg", caption: "▲ 마나카 요스케 씨" },
+      ],
+    },
+
+    news_drowned: {
+      type: "news",
+      title: "지역 부동산 회사 사장 마나카 요스케 씨, 익사체로 발견",
+      date: "20XX/5/3 공개",
+      body: [
+        "지역을 중심으로 사업을 전개하는 ‘아타미 부동산’의 사장, 마나카 요스케(まなか ようすけ) 씨가 5월 1일 16시경, 익사한 상태로 발견되었다. 검시 결과, 사망 시각은 같은 날 15시경으로 판명되었다.",
+        "최초 발견자인 카메라맨은 “발견했을 당시, 바다낚시공원에는 아무도 없었다”라고 증언했다. 이 카메라맨은 마나카 씨의 사망 추정 시각에 다른 장소에 있었다는 알리바이가 있기 때문에, 경찰은 마나카 씨가 혼자 낚시를 하던 중 발을 헛디뎌 바다에 추락한 사고사로 보고 수사를 진행하고 있다.",
+      ],
+      images: [
+        { src: "images/news_drowned_1.jpg", caption: "▲ 마나카 요스케 씨" },
       ],
     },
 

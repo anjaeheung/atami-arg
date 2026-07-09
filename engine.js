@@ -257,7 +257,9 @@ function linkKind(pageId) {
 function postEl(e) {
   const div = document.createElement("div");
   div.className = "post";
-  const lines = e.body.split("\n").map((l) => esc(l) || "&nbsp;").join("<br>");
+  const bodyHtml = e.aa
+    ? `<pre class="post-aa">${esc(e.body)}</pre>`
+    : `<div class="post-body">${e.body.split("\n").map((l) => esc(l) || "&nbsp;").join("<br>")}</div>`;
   div.innerHTML = `
     <div class="post-meta">
       <span class="pno">${e.post}:</span>
@@ -265,7 +267,7 @@ function postEl(e) {
       <span class="pdate">20XX/08/26</span>
       <span class="pid">ID:${esc(e.uid || "????????")}</span>
     </div>
-    <div class="post-body">${lines}</div>
+    ${bodyHtml}
     ${e.image ? `<div class="post-img"><img src="${esc(e.image)}" alt="" onerror="this.parentNode.classList.add('img-missing')"></div>` : ""}
     ${e.images ? `<div class="post-gallery">${e.images.map((src) => `<div class="ng-item"><img src="${esc(src)}" alt="" onerror="this.parentNode.classList.add('img-missing')"></div>`).join("")}</div>` : ""}
     ${e.link ? `<div class="link-banner ${linkKind(e.link.to)}" data-open="${e.link.to}">${esc(e.link.label)}</div>` : ""}`;

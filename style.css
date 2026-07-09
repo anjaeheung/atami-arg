@@ -82,6 +82,7 @@ body{
 .post-meta .pdate{color:#3a8a3a;margin-right:8px;}
 .post-meta .pid{color:#3a8a3a;}
 .post-body{color:#222;white-space:normal;word-break:break-word;}
+.post-aa{font-family:"MS PGothic","MS Pゴシック","Courier New",monospace;white-space:pre;font-size:13px;line-height:1.25;color:#222;margin:6px 0;overflow-x:auto;}
 .post-img{margin:12px 0 2px;max-width:420px;}
 .post-img img{max-width:100%;height:auto;border-radius:3px;cursor:zoom-in;display:block;}
 .post-img.img-missing{min-height:150px;background:#e6e6e6;border-radius:3px;position:relative;}

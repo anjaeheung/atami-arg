@@ -139,8 +139,11 @@ function showOutro(sceneId) {
 function finishOutro(sceneId) {
   const o = getScene(sceneId).outro;
   if (o && o.unlocks) {
-    state.unlockedScenes.add(o.unlocks);
-    state.newScenes.add(o.unlocks);
+    const next = getScene(o.unlocks);
+    if (next && !next.wip) {   // 제작 중(wip) 스레드는 일반 플레이어에게 열지 않음 (#dev는 devJump로 접근)
+      state.unlockedScenes.add(o.unlocks);
+      state.newScenes.add(o.unlocks);
+    }
   }
   openPage("board");
 }

@@ -151,7 +151,8 @@ function finishOutro(sceneId) {
 /* --------------------------- 게시판 톱 --------------------------- */
 function renderBoard() {
   const b = STORY.board;
-  const threads = b.threads.filter((th) => state.unlockedScenes.has(th.to));
+  // #dev 모드에선 모든 스레드 표시(테스트용). 일반 플레이어는 잠금 해제된 것만
+  const threads = isDev() ? b.threads : b.threads.filter((th) => state.unlockedScenes.has(th.to));
   $main().innerHTML = `
     <div class="board-top">
       <div class="board-logo">

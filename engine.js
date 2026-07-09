@@ -254,7 +254,7 @@ function submitLeak() {
   if (ok) {
     $main().innerHTML = `<div class="outro finale-ending"><div class="outro-text">${
       L.successLines.map((l) => l === "" ? `<div class="intro-gap"></div>` : `<p>${esc(l)}</p>`).join("")
-    }</div></div>`;
+    }</div>${L.nextThread ? `<button class="outro-btn" data-goscene="${esc(L.nextThread)}">${esc(L.nextButton || "계속")}</button>` : ""}</div>`;
     window.scrollTo(0, 0);
   } else {
     const m = document.getElementById("leakMsg");
@@ -666,6 +666,9 @@ function onMainClick(ev) {
 
   const finLeakSub = ev.target.closest("[data-finale-leak-submit]");
   if (finLeakSub) { submitLeak(); return; }
+
+  const goScene = ev.target.closest("[data-goscene]");
+  if (goScene) { const s = goScene.getAttribute("data-goscene"); state.unlockedScenes.add(s); openPage(s); return; }
 
   const sub = ev.target.closest("[data-submit]");
   if (sub) { submitQuiz(sub.getAttribute("data-submit")); return; }

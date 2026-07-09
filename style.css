@@ -239,15 +239,11 @@ body{
 
 /* 회원 전용 숨겨진 페이지 (봉투 클릭) */
 .hp-secret{margin:26px 28px;padding:20px;border:1px dashed #b9b0c9;border-radius:6px;background:#faf8fd;text-align:center;}
-.secret-envelope{
-  display:inline-block;margin:14px 0;padding:12px 18px;border-radius:6px;
-  background:#efe9f7;color:#5b3d8c;font-weight:700;cursor:pointer;user-select:none;
-  transition:transform .08s;
-}
-.secret-envelope img{display:block;max-width:280px;width:100%;margin:0 auto 8px;border-radius:4px;}
-.secret-envcap{font-size:13px;}
-.secret-envelope:hover{background:#e6dcf5;}
-.secret-envelope.clicked{transform:scale(.97);}
+.secret-envwrap{position:relative;display:inline-block;max-width:420px;width:100%;margin:14px 0;}
+.secret-envwrap img{display:block;width:100%;height:auto;border-radius:4px;}
+/* 마크 부분에만 얹는 투명 클릭 영역 (힌트 없음) */
+.secret-mark{position:absolute;background:transparent;border:none;padding:0;cursor:pointer;}
+.secret-mark.clicked{background:rgba(255,255,255,.04);}
 .secret-reveal{margin-top:16px;text-align:left;border-top:1px solid #e2d8ef;padding-top:8px;}
 .secret-reveal .news-masthead{font-size:22px;padding:8px 0 4px;border-bottom:3px solid var(--news-red);}
 .secret-reveal p{padding:0;}

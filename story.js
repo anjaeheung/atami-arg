@@ -533,9 +533,14 @@ const STORY = {
       ],
       // 봉투를 5번 누르면 열리는 회원 전용 숨겨진 페이지
       secret: {
-        clueLines: ["봉투를 5번 눌러보세요."],
+        heading: "우리는 지지 않습니다!",
+        clueLines: [
+          "얼마 전, 우리 협회에 괴문서가 도착했습니다.",
+          "자세한 내용은 회원 전용 페이지에 게재합니다.",
+        ],
         envelopeImage: "images/nsa-img03.jpg",
-        envelopeCaption: "✉  “8월 24일에 도착했습니다”  — 봉투를 5번 눌러보세요",
+        // 봉투 위 "마크"에만 얹는 클릭 영역 (5번 클릭 → 숨겨진 페이지). 힌트는 표시 안 함
+        markHotspot: { left: "44%", top: "40%", width: "15%", height: "19%" },
         clicks: 5,
         revealImage: "images/thread2-img03.jpg",   // 숨겨진 회원 페이지 통이미지
       },

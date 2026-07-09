@@ -396,15 +396,17 @@ function renderDocument(pageId) {
   }
 }
 
-// 봉투 5번 클릭 → 회원 전용 숨겨진 페이지
+// 봉투의 "마크"를 5번 클릭 → 회원 전용 숨겨진 페이지 (힌트 없음)
 function renderSecret(p, pageId) {
   const s = p.secret;
+  const hs = s.markHotspot || { left: "42%", top: "38%", width: "18%", height: "22%" };
   return `<div class="hp-secret">
       ${s.heading ? `<h2 class="hp-bh">${esc(s.heading)}</h2>` : ""}
       ${(s.clueLines || []).map((l) => `<p class="hp-line">${esc(l)}</p>`).join("")}
-      <div class="secret-envelope" data-secret-click="${pageId}">
+      <div class="secret-envwrap">
         ${s.envelopeImage ? `<img src="${s.envelopeImage}" alt="" onerror="this.style.display='none'">` : ""}
-        <div class="secret-envcap">${esc(s.envelopeCaption || "✉ 5번 눌러보세요")}</div>
+        <button class="secret-mark" data-secret-click="${pageId}" aria-label=""
+          style="left:${hs.left};top:${hs.top};width:${hs.width};height:${hs.height};"></button>
       </div>
       <div class="secret-reveal" id="secretReveal" style="display:none;">
         ${s.revealImage

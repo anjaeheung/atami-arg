@@ -1011,6 +1011,7 @@ const STORY = {
           image: "images/shin-history-img.jpg",
           lines: ["예로부터 복장(装束)과 함께 그 내용이 전승되고 있습니다. 이 신에게 기도한 덕분에 아타미에서는 천재지변을 피할 수 있다고 합니다."] },
         { plainImage: "images/shin-title04.png" },
+        { image: "images/shin-shinmotsu-img.jpg" },
         { lines: [
           "아타미에서만 자생하는 꽃 「미츠로」를 넣은 공물용 만주도 판매하고 있습니다.",
           "",

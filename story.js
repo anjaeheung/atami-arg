@@ -268,7 +268,7 @@ const STORY = {
       images: [
         // src: 기사에 오른쪽으로 뜨는 사진 (클릭하면 이 사진이 그대로 크게 뜸)
         // caption: 사진 밑 설명
-        { src: "images/news_missing_1.jpg", caption: "▲ 마나카 아이 씨" },
+        { src: "images/news_missing_1.jpg.webp", caption: "▲ 마나카 아이 씨" },
       ],
     },
 
@@ -283,7 +283,7 @@ const STORY = {
         "또한, 아타미에서 모델로 활동하는 마나카 씨의 외동딸을 둘러싼 괴롭힘 사건도 발생하고 있어, 그 속에서 마나카 씨가 어떤 판단을 내릴지 주목되고 있다.",
       ],
       images: [
-        { src: "images/news_resort_1.jpg", caption: "▲ 마나카 요스케 씨" },
+        { src: "images/news02-img01.jpg", caption: "▲ 마나카 요스케 씨" },
       ],
     },
 
@@ -296,7 +296,7 @@ const STORY = {
         "최초 발견자인 카메라맨은 “발견했을 당시, 바다낚시공원에는 아무도 없었다”라고 증언했다. 이 카메라맨은 마나카 씨의 사망 추정 시각에 다른 장소에 있었다는 알리바이가 있기 때문에, 경찰은 마나카 씨가 혼자 낚시를 하던 중 발을 헛디뎌 바다에 추락한 사고사로 보고 수사를 진행하고 있다.",
       ],
       images: [
-        { src: "images/news_drowned_1.jpg", caption: "▲ 마나카 요스케 씨" },
+        { src: "images/news02-img01.jpg", caption: "▲ 마나카 요스케 씨" },
       ],
     },
 
@@ -306,16 +306,14 @@ const STORY = {
       subtitle: "Development Promotion Association ・ 2015년 결성",
       banner: "아타미를 세련된 관광 도시로",
       images: [
-        { src: "images/hp_kaihatsu_1.jpg", caption: "개발추진협회 대표  우츠미 코타(うつみこうた)" },
+        { src: "images/3.png", caption: "개발추진협회 대표  우츠미 코타(うつみこうた)" },
       ],
       body: [
         "아타미를 아시아 최대 규모의 대형 리조트로.",
         "모든 것은 미래를 위해. 아이들을 위해.",
         "그리고 아타미의 더 큰 도약을 위해.",
-        "",
-        "◆ 관광 개발 추진을 지지합니다",
-        "개발추진협회 명예회원 · 참의원 의원(시즈오카현 선거구)  오야마 신이치(大山新一)",
       ],
+      supporterImage: "images/4.png",   // 오야마 신이치 지지자 블록(그래픽)
       // HP 하단의 News 공지 블록
       news: {
         title: "하츠시마에 새로운 리조트 개발 부지 확보!",
@@ -324,7 +322,7 @@ const STORY = {
           "본 협회는 관광객 유치를 위해 이곳에 세계 각국의 미술품을 모은 ‘하츠시마 미술관’ 건설을 계획하고 있습니다.",
         ],
         images: [
-          { src: "images/hp_kaihatsu_2.jpg", caption: "▲ 하츠시마 미술관 완공 예상도" },
+          { src: "images/5.jpg", caption: "▲ 하츠시마 미술관 완공 예상도" },
         ],
       },
     },

@@ -187,6 +187,8 @@ body{
 .hp>.doc-figure{text-align:center;}
 .hp>.doc-figure .img-wrap{display:inline-block;min-width:220px;}
 .hp-line{text-align:center;color:#333;}
+.hp-supporter{text-align:center;margin:28px 28px 6px;}
+.hp-supporter .img-wrap{display:inline-block;max-width:560px;width:100%;}
 
 /* HP 하단 News 공지 블록 */
 .hp-news{margin-top:30px;padding:0 0 8px;border-top:1px solid #eee;}

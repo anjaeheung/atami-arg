@@ -339,6 +339,7 @@ function renderDocument(pageId) {
         ${p.banner ? `<div class="hp-banner">${esc(p.banner)}</div>` : ""}
         ${(p.images || []).map(imgHtml).join("")}
         ${p.body.map((para) => para === "" ? "" : `<p class="hp-line">${esc(para)}</p>`).join("")}
+        ${p.supporterImage ? `<figure class="doc-figure hp-supporter"><div class="img-wrap"><img src="${p.supporterImage}" alt="" onerror="this.parentNode.classList.add('img-missing')"></div></figure>` : ""}
         ${p.news ? `
           <div class="hp-news">
             <div class="news-masthead">News</div>

@@ -535,12 +535,12 @@ const STORY = {
         { quiz: {
             question: "Q. 신만주를 먹고 몸 상태가 나빠진 이유는?",
             fields: [
-              { type: "text", label: "마나카 아이가 먹은 신만주에는", answers: ["ミツロ", "미츠로", "みつろ", "ロロロ", "로로로"] },
-              { type: "text", label: "별명", answers: ["幸福草", "행복초", "こうふくそう"] },
+              { type: "text", label: "마나카 아이가 먹은 신만주에는", answers: ["幸福草", "행복초", "こうふくそう"] },
+              { type: "text", label: "별명", answers: ["ミツロ", "미츠로", "みつろ", "ロロロ", "로로로"] },
               { text: "가 들어 있었다" },
             ],
         } },
-        { post: 9, uid: "fuy74aanh", body: "알았다!\n마나카 아이가 먹은 신만주에는 미츠로, 즉 별명 행복초가 들어 있었다" },
+        { post: 9, uid: "fuy74aanh", body: "알았다!\n마나카 아이가 먹은 신만주에는 행복초, 즉 별명 미츠로가 들어 있었다" },
         { post: 10, uid: "y4zmtcaus", body: "뭐?\n행복초라면 신주를 죽인 미타 토라타가 가지고 있던 위험한 식물 아니냐\n환각 작용 있지 않았냐?" },
         { post: 11, uid: "kk3whcd7z", body: "그런 게 들어간 만주를 판다고!?" },
         { post: 12, uid: "cfitzu36i", body: "사러 간다 ( ﾟ∀ﾟ)o彡゜" },

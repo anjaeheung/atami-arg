@@ -97,6 +97,7 @@ body{
 }
 .link-banner::before{content:"› ";}
 .link-banner:hover{filter:brightness(1.08);}
+.link-banner.hp{background:#2f9e3f;}   /* 홈페이지(HP) 링크는 초록 */
 
 /* -------------------------------- 퀴즈 -------------------------------- */
 .quiz-area{padding:8px 20px;}
@@ -145,7 +146,18 @@ body{
 .news-date{background:var(--news-red);color:#fff;padding:5px 28px;font-size:13px;}
 .news-title{font-size:24px;color:#222;padding:22px 28px 10px;margin:0;font-weight:700;}
 .doc p{padding:0 28px;margin:.7em 0;color:#333;}
-.hp-title{font-size:26px;color:var(--purple);padding:26px 28px 8px;margin:0;}
+.hp-title{font-size:30px;color:#1f3a6d;margin:0;letter-spacing:6px;font-family:"Yu Mincho","MS Mincho",serif;}
+.hp .doc-back{margin-bottom:6px;}
+.hp-head{text-align:center;padding:26px 28px 6px;background:#f4f7fc;}
+.hp-sub{color:#3a4a6a;font-size:13px;letter-spacing:2px;margin-top:6px;}
+.hp-banner{
+  background:#1f3a6d;color:#fff;text-align:center;font-weight:700;font-size:20px;
+  padding:16px 20px;margin:0 0 8px;letter-spacing:2px;
+  font-family:"Yu Mincho","MS Mincho",serif;
+}
+.hp .doc-figure{text-align:center;}
+.hp .img-wrap{display:inline-block;min-width:220px;}
+.hp-line{text-align:center;color:#333;}
 
 .doc-figure{margin:16px 28px;}
 /* 뉴스 기사: 사진을 오른쪽에 띄우고 본문이 감싸게 */

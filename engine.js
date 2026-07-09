@@ -131,11 +131,13 @@ function renderThread(sceneId) {
     const e = entries[i];
     if (e.post != null) {
       postEntries.push({ i, data: e });
-    } else if (e.quiz) {
-      const ap = e.quiz.answerPost || {};
+    } else if (e.quiz && e.quiz.answerPost) {
+      // 정답 글을 남기는 문제만: 내가 입력한 답이 지정된 번호 글로 올라감
+      const ap = e.quiz.answerPost;
       const ans = (state.answers[sceneId] || {})[i] || "";
       postEntries.push({ i, data: { post: ap.post, uid: ap.uid, body: ans } });
     }
+    // answerPost 없는 문제는 정답 글 없이 통과만 (게시판 번호 연속)
   }
 
   const immediate = postEntries.filter((p) => p.i <= lastShown);
@@ -177,6 +179,12 @@ function renderThread(sceneId) {
   step();
 }
 
+// 링크 배너 색: HP는 초록, 뉴스는 빨강(기본)
+function linkKind(pageId) {
+  const p = STORY.pages[pageId];
+  return p && p.type === "hp" ? "hp" : "";
+}
+
 function postEl(e) {
   const div = document.createElement("div");
   div.className = "post";
@@ -189,7 +197,7 @@ function postEl(e) {
       <span class="pid">ID:${esc(e.uid || "????????")}</span>
     </div>
     <div class="post-body">${lines}</div>
-    ${e.link ? `<div class="link-banner" data-open="${e.link.to}">${esc(e.link.label)}</div>` : ""}`;
+    ${e.link ? `<div class="link-banner ${linkKind(e.link.to)}" data-open="${e.link.to}">${esc(e.link.label)}</div>` : ""}`;
   return div;
 }
 
@@ -295,9 +303,13 @@ function renderDocument(pageId) {
     $main().innerHTML = `
       <div class="doc hp">
         ${back}
-        <h1 class="hp-title">${esc(p.title)}</h1>
+        <div class="hp-head">
+          <h1 class="hp-title">${esc(p.title)}</h1>
+          ${p.subtitle ? `<div class="hp-sub">${esc(p.subtitle)}</div>` : ""}
+        </div>
+        ${p.banner ? `<div class="hp-banner">${esc(p.banner)}</div>` : ""}
         ${(p.images || []).map(imgHtml).join("")}
-        ${p.body.map((para) => `<p>${esc(para)}</p>`).join("")}
+        ${p.body.map((para) => para === "" ? "" : `<p class="hp-line">${esc(para)}</p>`).join("")}
       </div>`;
   }
 }

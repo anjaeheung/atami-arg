@@ -1,8 +1,10 @@
 이 폴더에 게임에서 쓰는 이미지를 넣습니다.
 story.js 의 이미지 경로와 파일명이 일치하면 자동으로 표시됩니다.
 
-[현재 슬라이스에서 쓰는 이미지 슬롯]
-- news_missing_1.jpg  실종 뉴스 기사 얼굴 사진(클릭하면 크게 뜸)  (news_missing.images[0].src)
+[현재 쓰는 이미지 슬롯]  (전부 클릭하면 크게 뜸)
+- news_missing_1.jpg  실종 뉴스 기사 — 마나카 아이 얼굴 사진        (news_missing)
+- news_resort_1.jpg   리조트 개발 뉴스 — 마나카 요스케 사진         (news_resort)
+- hp_kaihatsu_1.jpg   개발추진협회 HP — 대표 우츠미 코타 사진        (hp_kaihatsu)
 
 (소문채널 로고는 이미지 없이 글자 '噂ちゃんねる' 로 표시됩니다 — 이미지 불필요)
 

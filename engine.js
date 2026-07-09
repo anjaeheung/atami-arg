@@ -350,7 +350,7 @@ function submitQuiz(sceneId) {
 }
 
 function norm(s) {
-  return String(s).trim().toLowerCase().replace(/\s+/g, "").replace(/[.\-/]/g, "");
+  return String(s).trim().toLowerCase().replace(/\s+/g, "").replace(/[.\-/,、·・]/g, "");
 }
 
 /* --------------------------- 뉴스 / HP --------------------------- */

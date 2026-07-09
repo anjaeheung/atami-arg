@@ -398,7 +398,7 @@ const STORY = {
         { post: 17, uid: "wh7trehy3", body: "진짜네 ㅋㅋ 가게 앞에 놓여 있다\n다른 도난품도 사진집에 찍혀 있을지도 모르겠다" },
         { post: 18, uid: "wh7trehy3", body: "이 사진집 진짜 뭐냐…?\n이건 좀 이상한데…?" },
         { post: 19, uid: "swb86w59c", body: "일단 찾아보자, 나머지 4개의 도난품도", images: ["images/news06-img02.jpg", "images/news06-img03.jpg", "images/news06-img05.jpg", "images/news06-img06.jpg"] },
-        { quiz: { question: "Q. 나머지 도난품이 실려 있는 사진집 페이지는? (예: 31,32,56,62)", fields: [{ type: "text", placeholder: "페이지 번호 입력", answers: ["31,32,56,62", "31 32 56 62", "31325662"] }] } },
+        { quiz: { question: "Q. 나머지 도난품이 실려 있는 사진집 페이지는? (4곳, 쉼표로 구분해 입력)", fields: [{ type: "text", placeholder: "예: ○,○,○,○", answers: ["31,32,56,62", "31 32 56 62", "31325662"] }] } },
         { post: 20, uid: "28r5eduf4", body: "나머지 도난품도 다 찾았다\n31·32·56·62페이지에 찍혀 있어" },
         { post: 21, uid: "28r5eduf4", body: "도난품을 길거리에 놔두다니 대담한 범인이네" },
         { post: 22, uid: "cftizu36i", body: "전부 일부러 가게 앞에 둔 것 같지 않냐" },

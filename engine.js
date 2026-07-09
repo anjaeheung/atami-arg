@@ -226,6 +226,7 @@ function postEl(e) {
       <span class="pid">ID:${esc(e.uid || "????????")}</span>
     </div>
     <div class="post-body">${lines}</div>
+    ${e.image ? `<div class="post-img"><img src="${esc(e.image)}" alt="" onerror="this.parentNode.classList.add('img-missing')"></div>` : ""}
     ${e.link ? `<div class="link-banner ${linkKind(e.link.to)}" data-open="${e.link.to}">${esc(e.link.label)}</div>` : ""}`;
   return div;
 }
@@ -410,7 +411,7 @@ function showToast(text) {
 /* --------------------------- 이벤트 위임 --------------------------- */
 function onMainClick(ev) {
   // 기사/HP 이미지 클릭 → 확대 (실제로 로드된 이미지일 때만)
-  const img = ev.target.closest(".doc-figure img");
+  const img = ev.target.closest(".doc-figure img, .post-img img");
   if (img && img.naturalWidth > 0) { openLightbox(img.dataset.full || img.src); return; }
 
   const nav = ev.target.closest("[data-nav]");

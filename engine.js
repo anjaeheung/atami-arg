@@ -86,7 +86,7 @@ function renderBoard() {
   $main().innerHTML = `
     <div class="board-top">
       <div class="board-logo">
-        <img src="${b.logoImage}" alt="" onerror="this.style.display='none'">
+        ${b.logoImage ? `<img src="${b.logoImage}" alt="" onerror="this.style.display='none'">` : ""}
         <span class="logo-text">${esc(b.logo)}</span>
       </div>
       <div class="board-tagline">

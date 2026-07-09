@@ -31,9 +31,29 @@ document.addEventListener("DOMContentLoaded", () => {
   $main().addEventListener("click", onMainClick);
   // 이미지 확대(라이트박스) 닫기
   document.getElementById("lightbox").addEventListener("click", closeLightbox);
-  render();
+  // URL로 특정 스레드부터 시작 (예: #thread3, #t3, #3) — 이전 스레드도 열린 상태로
+  const startScene = getStartScene();
+  if (startScene) {
+    for (const th of STORY.board.threads) {
+      state.unlockedScenes.add(th.to);
+      if (th.to === startScene) break;
+    }
+    openPage(startScene);
+  } else {
+    render();
+  }
   if (isDev()) buildDevPanel();   // URL에 #dev → 개발용 점프 패널
 });
+
+// #thread3 / #t3 / #3 → 시작할 스레드 id (없으면 null)
+function getStartScene() {
+  try {
+    const h = (location.hash || "").replace("#", "").toLowerCase();
+    const m = h.match(/^(?:thread|t)?(\d)$/);
+    if (m) { const id = "thread" + m[1]; if (STORY.scenes.some((s) => s.id === id)) return id; }
+  } catch (e) {}
+  return null;
+}
 
 /* ----------------------- 개발용 점프 패널 ----------------------- */
 function isDev() {

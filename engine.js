@@ -252,9 +252,18 @@ function submitLeak() {
     });
   });
   if (ok) {
-    $main().innerHTML = `<div class="outro finale-ending"><div class="outro-text">${
-      L.successLines.map((l) => l === "" ? `<div class="intro-gap"></div>` : `<p>${esc(l)}</p>`).join("")
-    }</div>${L.nextThread ? `<button class="outro-btn" data-goscene="${esc(L.nextThread)}">${esc(L.nextButton || "계속")}</button>` : ""}</div>`;
+    const pv = L.postPreview;
+    const linesHtml = (arr) => arr.map((l) => l === "" ? `<div class="intro-gap"></div>` : `<p>${esc(l)}</p>`).join("");
+    $main().innerHTML = `<div class="outro finale-ending">
+        ${L.successHead ? `<div class="finale-thanks">${esc(L.successHead)}</div>` : ""}
+        <div class="outro-text">${linesHtml(L.successLines)}</div>
+        ${pv ? `<div class="finale-postbox">
+          <div class="post-meta"><span class="pno">${pv.no}:</span> <span class="pname">익명</span> <span class="pdate">20XX/09/26</span> <span class="pid">ID:${esc(pv.uid)}</span></div>
+          <div class="finale-postbody">${esc(pv.body)}</div>
+        </div>` : ""}
+        ${L.successLines2 ? `<div class="outro-text">${linesHtml(L.successLines2)}</div>` : ""}
+        ${L.nextThread ? `<button class="outro-btn" data-goscene="${esc(L.nextThread)}">${esc(L.nextButton || "계속")}</button>` : ""}
+      </div>`;
     window.scrollTo(0, 0);
   } else {
     const m = document.getElementById("leakMsg");

@@ -571,7 +571,7 @@ const STORY = {
         { post: 36, uid: "y4zmtcaus", body: "난 처음부터 편집장이 수상하다고 생각했어" },
         { post: 37, uid: "kk3whcd7z", body: "지금 돌입\n편집장 흑막 확정?" },
         { post: 38, uid: "ggh7cgd3k", body: "편집장 우미하라가 도망치기 전에 잡아!" },
-        { post: 39, uid: "swb86w59c", body: "" },
+        { post: 39, uid: "swb86w59c", body: "", image: "images/thread4-img01.jpg" },
         { post: 40, uid: "t57r5h43d", body: "아! ID:swb86w59c!" },
         { post: 41, uid: "kk3whcd7z", body: "모델 사진? 사진집에 실려 있던 거다" },
         { post: 42, uid: "ggh7cgd3k", body: "야! 우미하라! 이제 정체 들통났어!!" },

@@ -492,7 +492,7 @@ const STORY = {
         { post: 81, uid: "swb86w59c", body: "뉴스 또 나왔다", link: { to: "news_final_arrest", label: "▶ 하츠시마 미술관 미술품 도난 사건  지명수배 용의자 체포" } },
         { post: 82, uid: "gg65736d9", body: "진범 하루 만에 잡혔네" },
         { post: 83, uid: "c9xtzkcnx", body: "이 얼굴, 사진집에서 봤던 그 험상궂은 남자 맞지" },
-        { post: 84, uid: "swb86w59c", body: "상관도 업데이트됐다고 했었지", link: { to: "page_chart", label: "▶ 사건 관계도" } },
+        { post: 84, uid: "swb86w59c", body: "상관도 업데이트됐다고 했었지", link: { to: "page_chart2", label: "▶ 사건 관계도 (업데이트)" } },
         { post: 85, uid: "28r5eduf4", body: "신(神)" },
         { post: 86, uid: "7x9zfh9s", body: "뭐 어쨌든 캠페인 사이트에 정답 입력하러 가볼까" },
         { post: 87, uid: "swb86w59c", body: "이걸로 캠페인 질문은 전부 답한 거네\n근데 진짜 위험한 사진집이었다…" },
@@ -732,6 +732,14 @@ const STORY = {
       title: "사건 관계도",
       blocks: [
         { image: "images/soukanzu-a.jpg", caption: "▲ 클릭하면 크게 볼 수 있습니다" },
+      ],
+    },
+
+    page_chart2: {   // 3탄 업데이트판 (카와토라 킨조·절도 지시 추가)
+      type: "hp",
+      title: "사건 관계도 (업데이트)",
+      blocks: [
+        { image: "images/soukanzu-b.jpg", caption: "▲ 클릭하면 크게 볼 수 있습니다" },
       ],
     },
 

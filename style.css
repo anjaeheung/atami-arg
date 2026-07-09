@@ -87,6 +87,8 @@ body{
 .post-img.img-missing{min-height:150px;background:#e6e6e6;border-radius:3px;position:relative;}
 .post-img.img-missing img{display:none;}
 .post-img.img-missing::after{content:"이미지 자리";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#999;font-size:13px;}
+.post-gallery{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0 2px;max-width:500px;}
+.post-gallery .ng-item{flex:0 0 45%;max-width:220px;min-width:120px;}
 
 /* 새로 등장하는 글 */
 .post.reveal{animation:slidein .45s ease;background:#f4f4f4;}

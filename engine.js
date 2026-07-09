@@ -267,6 +267,7 @@ function postEl(e) {
     </div>
     <div class="post-body">${lines}</div>
     ${e.image ? `<div class="post-img"><img src="${esc(e.image)}" alt="" onerror="this.parentNode.classList.add('img-missing')"></div>` : ""}
+    ${e.images ? `<div class="post-gallery">${e.images.map((src) => `<div class="ng-item"><img src="${esc(src)}" alt="" onerror="this.parentNode.classList.add('img-missing')"></div>`).join("")}</div>` : ""}
     ${e.link ? `<div class="link-banner ${linkKind(e.link.to)}" data-open="${e.link.to}">${esc(e.link.label)}</div>` : ""}`;
   return div;
 }

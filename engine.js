@@ -254,6 +254,10 @@ function submitLeak() {
   if (ok) {
     const pv = L.postPreview;
     const linesHtml = (arr) => arr.map((l) => l === "" ? `<div class="intro-gap"></div>` : `<p>${esc(l)}</p>`).join("");
+    const nextScene = L.nextThread ? getScene(L.nextThread) : null;
+    let nextHtml = "";
+    if (nextScene && !nextScene.wip) nextHtml = `<button class="outro-btn" data-goscene="${esc(L.nextThread)}">${esc(L.nextButton || "계속")}</button>`;
+    else if (nextScene) nextHtml = `<div class="finale-tobe">(다음 이야기는 제작 중입니다…)</div>`;
     $main().innerHTML = `<div class="outro finale-ending">
         ${L.successHead ? `<div class="finale-thanks">${esc(L.successHead)}</div>` : ""}
         <div class="outro-text">${linesHtml(L.successLines)}</div>
@@ -262,7 +266,7 @@ function submitLeak() {
           <div class="finale-postbody">${esc(pv.body)}</div>
         </div>` : ""}
         ${L.successLines2 ? `<div class="outro-text">${linesHtml(L.successLines2)}</div>` : ""}
-        ${L.nextThread ? `<button class="outro-btn" data-goscene="${esc(L.nextThread)}">${esc(L.nextButton || "계속")}</button>` : ""}
+        ${nextHtml}
       </div>`;
     window.scrollTo(0, 0);
   } else {

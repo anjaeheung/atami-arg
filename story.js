@@ -102,7 +102,7 @@ const STORY = {
         { post: 29, uid: "swb86w59c", body: "그 사이에 찍은 풍경 사진에 우연히 같이 찍혀 있다거나?" },
 
         { quiz: {
-            question: "Q3. 25페이지 사진 속, 마나카 아이는 어디서 누구와 무엇을 하고 있나?",
+            question: "Q. 22페이지 이후에 그녀가 (우연히) 찍혀 있다. 무엇을 하고 있는가?",
             answerPost: { post: 30, uid: "k2p9wxz1q" },
             fields: [
               { type: "select", answer: "음식점",

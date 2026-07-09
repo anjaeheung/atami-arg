@@ -259,7 +259,7 @@ function renderThread(sceneId) {
     </div>`;
 
   const postsEl = document.getElementById("posts");
-  const lastShown = state.shown[sceneId] ?? -1;
+  const lastShown = state.shown[sceneId] != null ? state.shown[sceneId] : -1;
 
   // gate 이전의 표시 대상: 일반 글 + 이미 푼 문제의 "정답 글"(플레이어 입력)
   const postEntries = [];

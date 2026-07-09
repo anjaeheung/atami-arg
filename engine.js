@@ -15,6 +15,7 @@ const state = {
   bookmarkIds: new Set(),
   bookmarks: [],          // [{id, icon, title}]
   unlockedScenes: new Set(["thread1"]),
+  newScenes: new Set(),   // 새로 열려서 "NEW!" 뱃지 붙는 스레드
   animating: false,
   animToken: 0,        // 렌더될 때마다 증가 → 이전 등장 애니메이션 무효화
 };
@@ -49,6 +50,7 @@ function openPage(id) {
     state.returnTo = state.current;
   }
   state.current = id;
+  if (state.newScenes.has(id)) state.newScenes.delete(id);   // 방문하면 NEW 뱃지 해제
   addBookmark(id);
   render();
   window.scrollTo(0, 0);
@@ -80,6 +82,29 @@ function renderIntro() {
     </div>`;
 }
 
+/* ----------------------- 아웃트로 내레이션 ----------------------- */
+function showOutro(sceneId) {
+  const o = getScene(sceneId).outro;
+  state.animToken++;                 // 진행 중 애니메이션 취소
+  $main().innerHTML = `
+    <div class="outro">
+      <div class="outro-text">
+        ${o.lines.map((l) => l === "" ? `<div class="intro-gap"></div>` : `<p>${esc(l)}</p>`).join("")}
+      </div>
+      <button class="outro-btn" data-outro-continue="${sceneId}">${esc(o.continueButton || "계속")}</button>
+    </div>`;
+  window.scrollTo(0, 0);
+}
+
+function finishOutro(sceneId) {
+  const o = getScene(sceneId).outro;
+  if (o && o.unlocks) {
+    state.unlockedScenes.add(o.unlocks);
+    state.newScenes.add(o.unlocks);
+  }
+  openPage("board");
+}
+
 /* --------------------------- 게시판 톱 --------------------------- */
 function renderBoard() {
   const b = STORY.board;
@@ -95,7 +120,7 @@ function renderBoard() {
       </div>
       <div class="board-section">${esc(b.section)}</div>
       <ul class="thread-list">
-        ${threads.map((th) => `<li><a data-nav="${th.to}">${esc(th.label)}</a></li>`).join("")}
+        ${threads.map((th) => `<li><a data-nav="${th.to}">${esc(th.label)}</a>${state.newScenes.has(th.to) ? ` <span class="new-badge">NEW!</span>` : ""}</li>`).join("")}
       </ul>
     </div>`;
 }
@@ -149,10 +174,14 @@ function renderThread(sceneId) {
     state.shown[sceneId] = gateIndex - 1;
     if (gateQuiz) {
       renderQuiz(sceneId, gateQuiz);
-    } else {
-      // 더 이상 문제 없음 = 이번 슬라이스 끝
+    } else if (scene.outro) {
+      // 스레드 끝 → "스레드를 나간다" 버튼
       document.getElementById("quizArea").innerHTML =
-        `<div class="thread-end">여기까지가 지금 만들어진 부분입니다. (스토리 계속 제작 중…)
+        `<div class="thread-exit"><button class="exit-btn" data-outro="${sceneId}">${esc(scene.outro.button)}</button></div>`;
+    } else {
+      // 아직 준비 안 된 스레드
+      document.getElementById("quizArea").innerHTML =
+        `<div class="thread-end">이 스레드는 아직 준비 중입니다. (스토리 계속 제작 중…)
          <br><a class="link-inline" data-nav="board">← 게시판 목록으로</a></div>`;
     }
   };
@@ -378,6 +407,12 @@ function onMainClick(ev) {
 
   const open = ev.target.closest("[data-open]");
   if (open) { openPage(open.getAttribute("data-open")); return; }
+
+  const outro = ev.target.closest("[data-outro]");
+  if (outro) { showOutro(outro.getAttribute("data-outro")); return; }
+
+  const outroC = ev.target.closest("[data-outro-continue]");
+  if (outroC) { finishOutro(outroC.getAttribute("data-outro-continue")); return; }
 
   const sub = ev.target.closest("[data-submit]");
   if (sub) { submitQuiz(sub.getAttribute("data-submit")); return; }

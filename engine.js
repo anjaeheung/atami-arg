@@ -197,6 +197,7 @@ function renderFinale() {
               frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowfullscreen></iframe>
           </div></div>` : ""}
+        ${f.ending.leakButton && f.leak ? `<button class="leak-open-btn" data-finale-leak="1">${esc(f.ending.leakButton)}</button>` : ""}
       </div>`;
   }
   window.scrollTo(0, 0);
@@ -212,6 +213,52 @@ function submitFinalQuiz() {
   } else {
     const m = document.getElementById("finalQuizMsg");
     if (m) { m.textContent = "정답이 아닙니다. 다시 시도해 보세요."; m.classList.add("wrong"); }
+  }
+}
+
+// 文秋리크스(제보 폼)
+function renderLeak() {
+  const L = STORY.finale.leak;
+  state.animToken++;
+  let html = `<div class="leak">
+      <div class="leak-logo">${esc(L.title)}</div>
+      <h2 class="leak-heading">${esc(L.heading)}</h2>
+      <p class="leak-sub">${esc(L.sub)}</p>
+      <div class="leak-section-title">${esc(L.sectionTitle)}</div>
+      <div class="leak-form">`;
+  L.statements.forEach((st, si) => {
+    html += `<div class="leak-stmt">` + st.fields.map((f, fi) => {
+      if (f.text != null) return `<span class="leak-fixed">${esc(f.text)}</span>`;
+      const opts = `<option value="" disabled selected></option>` +
+        f.options.map((o) => `<option value="${esc(o)}">${esc(o)}</option>`).join("");
+      return `<select class="leak-select" data-si="${si}" data-fi="${fi}">${opts}</select>`;
+    }).join("") + `</div>`;
+  });
+  html += `<div class="leak-msg" id="leakMsg"></div>
+      <button class="leak-submit" data-finale-leak-submit="1">${esc(L.submit)}</button>
+    </div></div>`;
+  $main().innerHTML = html;
+  window.scrollTo(0, 0);
+}
+
+function submitLeak() {
+  const L = STORY.finale.leak;
+  let ok = true;
+  L.statements.forEach((st, si) => {
+    st.fields.forEach((f, fi) => {
+      if (f.text != null) return;
+      const el = document.querySelector(`[data-si="${si}"][data-fi="${fi}"]`);
+      if (!el || el.value !== f.answer) ok = false;
+    });
+  });
+  if (ok) {
+    $main().innerHTML = `<div class="outro finale-ending"><div class="outro-text">${
+      L.successLines.map((l) => l === "" ? `<div class="intro-gap"></div>` : `<p>${esc(l)}</p>`).join("")
+    }</div></div>`;
+    window.scrollTo(0, 0);
+  } else {
+    const m = document.getElementById("leakMsg");
+    if (m) { m.textContent = "아직 맞지 않은 항목이 있습니다."; m.classList.add("wrong"); }
   }
 }
 
@@ -613,6 +660,12 @@ function onMainClick(ev) {
 
   const finSub = ev.target.closest("[data-finale-submit]");
   if (finSub) { submitFinalQuiz(); return; }
+
+  const finLeak = ev.target.closest("[data-finale-leak]");
+  if (finLeak) { renderLeak(); return; }
+
+  const finLeakSub = ev.target.closest("[data-finale-leak-submit]");
+  if (finLeakSub) { submitLeak(); return; }
 
   const sub = ev.target.closest("[data-submit]");
   if (sub) { submitQuiz(sub.getAttribute("data-submit")); return; }

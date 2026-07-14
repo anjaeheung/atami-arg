@@ -723,7 +723,6 @@ const STORY = {
       submit: "전송",
       endingMovie: "Xj535-wQFvU",           // 최종 제보(신목/아래) 후 이어지는 엔딩 영상 = 끝
       endingMovieButton: "엔딩 무비를 재생한다",
-      successHead: "정보 제공 감사합니다.",
       successLines: [],
     },
   },

@@ -120,9 +120,16 @@ function openPage(id) {
 function isScene(id) { return STORY.scenes.some((s) => s.id === id); }
 function getScene(id) { return STORY.scenes.find((s) => s.id === id); }
 
+// 피날레·엔딩 화면에선 북마크 사이드바(손잡이 포함)를 숨긴다
+function setBmHidden(hide) {
+  const sb = document.getElementById("sidebar");
+  if (sb) sb.style.display = hide ? "none" : "";
+}
+
 function render() {
   state.animToken++;            // 진행 중이던 글 등장 애니메이션 취소
   state.animating = false;
+  setBmHidden(false);           // 일반 페이지(게시판/스레드/뉴스/HP)에선 북마크 표시
   const id = state.current;
   if (id === "intro") return renderIntro();
   if (id === "board") return renderBoard();
@@ -172,6 +179,7 @@ function finishOutro(sceneId) {
 /* ----------------------- 최종 피날레 ----------------------- */
 function startFinale() {
   state.finaleStep = 0;
+  setBmHidden(true);            // 피날레~엔딩 동안 북마크 숨김
   renderFinale();
 }
 
@@ -304,6 +312,7 @@ function submitLeak() {
 function renderRecord() {
   const r = STORY.finale.record;
   state.animToken++;
+  setBmHidden(true);            // 기록→내레이션→최종 제보→엔딩 동안 북마크 숨김
   const entries = r.entries.map((e) => `
       <div class="record-entry">
         <div class="record-date">${esc(e.date)}</div>

@@ -521,7 +521,6 @@ const STORY = {
       id: "thread4",
       type: "thread",
       title: "【사라진 모델은 어디로?】 아타미 사진집 감상 스레 4탄",
-      wip: true,   // 에필로그(제작 중) — 완성되면 이 줄 삭제
       entries: [
         { post: 1, uid: "t57r5h43d", body: "그러고 보니 그 모델은 어디로 간 걸까?\n\n이전 글\n【거리의 비참한 현실】 아타미 사진집 의혹 스레 3번째" },
         { post: 2, uid: "y4zmtcaus", body: "개발추진협회에 납치된 거 아니냐?" },

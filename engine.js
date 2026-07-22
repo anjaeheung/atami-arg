@@ -24,6 +24,24 @@ const $main = () => document.getElementById("main");
 
 /* ------------------------------ 진입점 ------------------------------ */
 document.addEventListener("DOMContentLoaded", () => {
+  // 운영 스위치(status.json)를 먼저 확인 → 닫혀 있으면 게임을 띄우지 않는다
+  fetch("status.json?_=" + Date.now(), { cache: "no-store" })
+    .then((r) => r.json())
+    .then((s) => {
+      if (s && s.open === false) { renderClosed(s.message); return; }
+      bootGame();
+    })
+    .catch(() => bootGame());   // 상태 확인 실패 시엔 게임을 켠다(fail-open)
+});
+
+// 닫힘 화면 — 한 줄만
+function renderClosed(message) {
+  setBmHidden(true);
+  const m = $main();
+  if (m) m.innerHTML = `<div class="closed-screen"><p>${esc(message || "현재 닫혀 있습니다.")}</p></div>`;
+}
+
+function bootGame() {
   document.getElementById("bmHandle").addEventListener("click", () => {
     document.getElementById("sidebar").classList.toggle("collapsed");
   });
@@ -43,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   }
   if (isDev()) buildDevPanel();   // URL에 #dev → 개발용 점프 패널
-});
+}
 
 // #thread3 / #t3 / #3 → 시작할 스레드 id (없으면 null)
 function getStartScene() {

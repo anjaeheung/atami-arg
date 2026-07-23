@@ -279,7 +279,7 @@ const STORY = {
         { post: 22, uid: "d5ehz2nyr", body: "이 녀석 완전 서퍼네 ㅋㅋ\n왜 팔에 완장 차고 있는지는 모르겠는데 ㅋㅋ", image: "images/thread2-img04.jpg" },
         { post: 23, uid: "swb86w59c", body: "어디 단체 마크 같은데?" },
         { post: 24, uid: "swb86w59c", body: "이 마크, 사진집 뒤쪽에서 본 것 같은데…\n벽돌 같은 건물이었나?" },
-        { quiz: { question: "Q. 기사에서 피해자 옆에 있던 남자가 소속된 것으로 보이는 단체 이름은?", fields: [ { type: "text", placeholder: "단체 이름 입력", answers: ["自然を守る会", "자연을지키는모임", "자연을 지키는 모임", "자연을 지키는 회", "자연을지키는회"] } ] } },
+        { quiz: { question: "Q. 기사에서 피해자 옆에 있던 남자가 소속된 것으로 보이는 단체 이름은?", fields: [ { type: "text", placeholder: "단체 이름 입력", answers: ["自然を守る会", "자연을지키는회", "자연을지키는모임", "자연을지키는협회"] } ] } },   // 띄어쓰기는 판정에서 무시됨
         { post: 25, uid: "gg65736d9", body: "「自然を守る会(자연을 지키는 회)」이라는 단체네" },
         { post: 26, uid: "44xifpydf", body: "뭐야 그게" },
         { post: 27, uid: "swb86w59c", body: "홈페이지 찾았다", link: { to: "hp_shizen", label: "▶ 자연을 지키는 회 HP" } },
@@ -412,7 +412,7 @@ const STORY = {
             question: "Q. 도난품이 놓여 있던 가게의 공통점은?",
             fields: [
               { type: "text", label: "어느 점포에나", answers: ["鹿頭", "가토", "사슴머리", "사슴 머리", "사슴머리(가토)"] },
-              { type: "text", label: "가 있어서", answers: ["自然を守る会", "자연을지키는회", "자연을 지키는 회", "자연을 지키는 모임", "자연을지키는모임"] },
+              { type: "text", label: "가 있어서", answers: ["自然を守る会", "자연을지키는회", "자연을지키는모임", "자연을지키는협회"] },
               { text: "협력점이라는 걸 알 수 있다" },
             ],
         } },

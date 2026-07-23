@@ -547,6 +547,12 @@ function submitQuiz(sceneId) {
     const val = el ? el.value : "";
     if (f.type === "select") {
       if (val !== f.answer) ok = false;
+    } else if (f.anyOrder) {
+      // 여러 항목을 순서 상관없이: 쉼표/공백 등으로 쪼개 집합 비교
+      const want = (f.answers || []).map((a) => String(a).toLowerCase()).sort();
+      let fieldOk = tokenList(val).join(",") === want.join(",");
+      if (!fieldOk && norm(val) === want.join("")) fieldOk = true;   // 구분자 없이 붙여 쓴 경우
+      if (!fieldOk) ok = false;
     } else {
       const answers = (f.answers || []).map(norm);
       if (!answers.includes(norm(val))) ok = false;
@@ -575,6 +581,11 @@ function submitQuiz(sceneId) {
 
 function norm(s) {
   return String(s).trim().toLowerCase().replace(/\s+/g, "").replace(/[.\-/,、·・]/g, "");
+}
+
+// 순서 무관 답(여러 항목)용: 구분자로 쪼개서 정렬한 목록
+function tokenList(s) {
+  return String(s).trim().toLowerCase().split(/[\s,、，./·・\-_|]+/).filter(Boolean).sort();
 }
 
 /* --------------------------- 뉴스 / HP --------------------------- */

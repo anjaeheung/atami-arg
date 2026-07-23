@@ -56,7 +56,10 @@ function bootGame() {
       state.unlockedScenes.add(th.to);
       if (th.to === startScene) break;
     }
+    prefillBookmarks(startScene);   // 이전 스레드에서 모았을 북마크를 미리 채움
     openPage(startScene);
+  } else if (loadProgress()) {
+    render();                       // 저장된 진행 복구 (새로고침해도 그대로)
   } else {
     render();
   }
@@ -148,6 +151,7 @@ function render() {
   state.animToken++;            // 진행 중이던 글 등장 애니메이션 취소
   state.animating = false;
   setBmHidden(false);           // 일반 페이지(게시판/스레드/뉴스/HP)에선 북마크 표시
+  saveProgress();               // 이동할 때마다 진행 저장
   const id = state.current;
   if (id === "intro") return renderIntro();
   if (id === "board") return renderBoard();
@@ -376,6 +380,7 @@ function renderBoard() {
       <ul class="thread-list">
         ${threads.map((th) => `<li><a data-nav="${th.to}">${esc(th.label)}</a>${state.newScenes.has(th.to) ? ` <span class="new-badge">NEW!</span>` : ""}</li>`).join("")}
       </ul>
+      <div class="board-reset"><a data-reset="1">처음부터 다시하기</a></div>
     </div>`;
 }
 
@@ -426,6 +431,7 @@ function renderThread(sceneId) {
 
   const finish = () => {
     state.shown[sceneId] = gateIndex - 1;
+    saveProgress();             // 글이 다 등장한 시점의 진행 저장
     if (gateQuiz) {
       renderQuiz(sceneId, gateQuiz);
     } else if (scene.outro) {
@@ -559,6 +565,7 @@ function submitQuiz(sceneId) {
     state.answers[sceneId][quizIndex] = answerText;
 
     state.solved[sceneId] = solvedCount + 1;
+    saveProgress();                   // 정답 진행 저장
     renderThread(sceneId);            // 정답 글 + 다음 글들이 순차 등장
   } else {
     msg.textContent = "정답이 아닙니다. 다시 시도해 보세요.";
@@ -706,8 +713,62 @@ function imgHtml(img) {
     </figure>`;
 }
 
+/* ----------------------- 진행 저장 / 복원 ----------------------- */
+const SAVE_KEY = "atami-arg-save";
+
+function setToArray(s) { const a = []; s.forEach((v) => a.push(v)); return a; }
+
+// 스토리 구조가 바뀌면 옛 저장본을 자동 폐기하기 위한 서명(글 개수·스레드 구성 기준)
+function storySignature() {
+  try {
+    const sc = STORY.scenes.map((s) => s.id + ":" + (s.entries || []).length).join("|");
+    return sc + "#" + Object.keys(STORY.pages).length;
+  } catch (e) { return "?"; }
+}
+
+function saveProgress() {
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      v: storySignature(),
+      current: state.current,
+      returnTo: state.returnTo,
+      solved: state.solved,
+      answers: state.answers,
+      shown: state.shown,
+      bookmarks: state.bookmarks,
+      unlocked: setToArray(state.unlockedScenes),
+      newScenes: setToArray(state.newScenes),
+    }));
+  } catch (e) {}   // 사생활보호모드 등에서 저장 실패해도 게임은 계속
+}
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return false;
+    const d = JSON.parse(raw);
+    if (!d || d.v !== storySignature()) { clearProgress(); return false; }  // 스토리 바뀜 → 폐기
+    if (!d.current || d.current === "intro") return false;                  // 인트로면 복원 의미 없음
+    state.current = d.current;
+    state.returnTo = d.returnTo || null;
+    state.solved = d.solved || {};
+    state.answers = d.answers || {};
+    state.shown = d.shown || {};
+    state.bookmarks = d.bookmarks || [];
+    state.bookmarkIds = new Set(state.bookmarks.map((b) => b.id));
+    state.unlockedScenes = new Set(d.unlocked && d.unlocked.length ? d.unlocked : ["thread1"]);
+    state.newScenes = new Set(d.newScenes || []);
+    renderSidebar();
+    return true;
+  } catch (e) { return false; }
+}
+
+function clearProgress() {
+  try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+}
+
 /* --------------------------- 북마크 --------------------------- */
-function addBookmark(id) {
+function addBookmark(id, silent) {
   if (id === "intro") return;
   if (state.bookmarkIds.has(id)) return;
 
@@ -723,7 +784,18 @@ function addBookmark(id) {
   state.bookmarkIds.add(id);
   state.bookmarks.push({ id, icon, title });
   renderSidebar();
-  showToast("북마크에 추가되었습니다");
+  if (!silent) showToast("북마크에 추가되었습니다");
+}
+
+// #threadN 으로 바로 시작할 때, 이전 스레드에서 모았을 북마크를 미리 채운다
+function prefillBookmarks(startScene) {
+  addBookmark("board", true);
+  for (const th of STORY.board.threads) {
+    addBookmark(th.to, true);                 // 스레드 자체
+    if (th.to === startScene) break;          // 현재 스레드의 페이지들은 직접 열어서 모아야 함
+    const sc = getScene(th.to);               // 이전 스레드에 걸려 있던 뉴스/HP 전부
+    if (sc) (sc.entries || []).forEach((e) => { if (e.link && e.link.to) addBookmark(e.link.to, true); });
+  }
 }
 
 function renderSidebar() {
@@ -746,6 +818,16 @@ function onMainClick(ev) {
   // 기사/HP 이미지 클릭 → 확대 (실제로 로드된 이미지일 때만)
   const img = ev.target.closest(".doc-figure img, .post-img img, .ng-item img");
   if (img && img.naturalWidth > 0) { openLightbox(img.dataset.full || img.src); return; }
+
+  // 저장된 진행 지우고 처음부터
+  const reset = ev.target.closest("[data-reset]");
+  if (reset) {
+    if (window.confirm("저장된 진행을 지우고 처음부터 다시 시작할까요?")) {
+      clearProgress();
+      location.href = location.pathname;   // 해시(#threadN)까지 떼고 깨끗하게 재시작
+    }
+    return;
+  }
 
   const nav = ev.target.closest("[data-nav]");
   if (nav) { openPage(nav.getAttribute("data-nav")); return; }
